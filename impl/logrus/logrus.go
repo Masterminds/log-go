@@ -9,13 +9,13 @@ type Logrus struct {
 	logger *logrus.Logger
 }
 
-func New(lgr *logrus.Logger) *Logrus {
+func New(lgr *logrus.Logger) log.Logger {
 	return &Logrus{
 		logger: lgr,
 	}
 }
 
-func NewStandard() *Logrus {
+func NewStandard() log.Logger {
 	return &Logrus{
 		logger: logrus.StandardLogger(),
 	}
