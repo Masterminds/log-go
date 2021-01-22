@@ -203,3 +203,98 @@ func dummyw(buf *bytes.Buffer, level, msg string, fields Fields) {
 	str := fmt.Sprintf(`level=%s msg="%s" %s`, level, msg, flds)
 	buf.WriteString(str)
 }
+
+func TestNotSet(t *testing.T) {
+	buf := &bytes.Buffer{}
+	lgr := newNotSet(buf)
+
+	lgr.Debug("test debug")
+	if buf.String() != "No logger set" {
+		t.Error("notset debug not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Debugf("Hello %s", "World")
+	if buf.String() != "No logger set" {
+		t.Error("notset debug not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Debugw("foo bar", Fields{"baz": "qux"})
+	if buf.String() != "No logger set" {
+		t.Error("notset debug not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Info("test info")
+	if buf.String() != "No logger set" {
+		t.Error("notset info not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Infof("Hello %s", "World")
+	if buf.String() != "No logger set" {
+		t.Error("notset info not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Infow("foo bar", Fields{"baz": "qux"})
+	if buf.String() != "No logger set" {
+		t.Error("notset info not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Warn("test warn")
+	if buf.String() != "No logger set" {
+		t.Error("notset warning not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Warnf("Hello %s", "World")
+	if buf.String() != "No logger set" {
+		t.Error("notset warning not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Warnw("foo bar", Fields{"baz": "qux"})
+	if buf.String() != "No logger set" {
+		t.Error("notset warning not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Error("test error")
+	if buf.String() != "No logger set" {
+		t.Error("notset error not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Errorf("Hello %s", "World")
+	if buf.String() != "No logger set" {
+		t.Error("notset error not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Errorw("foo bar", Fields{"baz": "qux"})
+	if buf.String() != "No logger set" {
+		t.Error("notset error not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Fatal("test fatal")
+	if buf.String() != "No logger set" {
+		t.Error("notset fatal not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Fatalf("Hello %s", "World")
+	if buf.String() != "No logger set" {
+		t.Error("notset fatal not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Fatalw("foo bar", Fields{"baz": "qux"})
+	if buf.String() != "No logger set" {
+		t.Error("notset fatal not logging correctly")
+	}
+	buf.Reset()
+}
