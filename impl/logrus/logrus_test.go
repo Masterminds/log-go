@@ -10,10 +10,11 @@ import (
 )
 
 func TestLogrus(t *testing.T) {
-	logrus.SetLevel(logrus.DebugLevel)
+	var logger = logrus.New()
+	logger.SetLevel(logrus.DebugLevel)
 	buf := &bytes.Buffer{}
-	logrus.SetOutput(buf)
-	lgr := NewLogrus()
+	logger.SetOutput(buf)
+	lgr := NewLogrus(logger)
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `level=debug msg="test debug"`) {
@@ -102,7 +103,8 @@ func TestLogrus(t *testing.T) {
 }
 
 func TestLogrusInterface(t *testing.T) {
-	lgr := NewLogrus()
+	var logger = logrus.New()
+	lgr := NewLogrus(logger)
 	testfunc(lgr)
 }
 

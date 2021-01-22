@@ -5,68 +5,72 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Logrus struct{}
+type Logrus struct {
+	logger *logrus.Logger
+}
 
-func NewLogrus() *Logrus {
-	return &Logrus{}
+func NewLogrus(lgr *logrus.Logger) *Logrus {
+	return &Logrus{
+		logger: lgr,
+	}
 }
 
 func (l Logrus) Debug(msg string) {
-	logrus.Debug(msg)
+	l.logger.Debug(msg)
 }
 
 func (l Logrus) Debugf(template string, args ...interface{}) {
-	logrus.Debugf(template, args...)
+	l.logger.Debugf(template, args...)
 }
 
 func (l Logrus) Debugw(msg string, fields log.Fields) {
-	logrus.WithFields(logrus.Fields(fields)).Debug(msg)
+	l.logger.WithFields(logrus.Fields(fields)).Debug(msg)
 }
 
 func (l Logrus) Info(msg string) {
-	logrus.Info(msg)
+	l.logger.Info(msg)
 }
 
 func (l Logrus) Infof(template string, args ...interface{}) {
-	logrus.Infof(template, args...)
+	l.logger.Infof(template, args...)
 }
 
 func (l Logrus) Infow(msg string, fields log.Fields) {
-	logrus.WithFields(logrus.Fields(fields)).Info(msg)
+	l.logger.WithFields(logrus.Fields(fields)).Info(msg)
 }
 
 func (l Logrus) Warn(msg string) {
-	logrus.Warn(msg)
+	l.logger.Warn(msg)
 }
 
 func (l Logrus) Warnf(template string, args ...interface{}) {
-	logrus.Warnf(template, args...)
+	l.logger.Warnf(template, args...)
 }
 
 func (l Logrus) Warnw(msg string, fields log.Fields) {
-	logrus.WithFields(logrus.Fields(fields)).Warn(msg)
+	l.logger.WithFields(logrus.Fields(fields)).Warn(msg)
 }
 
 func (l Logrus) Error(msg string) {
-	logrus.Error(msg)
+	l.logger.Error(msg)
 }
 
 func (l Logrus) Errorf(template string, args ...interface{}) {
-	logrus.Errorf(template, args...)
+	l.logger.Errorf(template, args...)
 }
 
 func (l Logrus) Errorw(msg string, fields log.Fields) {
-	logrus.WithFields(logrus.Fields(fields)).Error(msg)
+	l.logger.WithFields(logrus.Fields(fields)).Error(msg)
 }
 
 func (l Logrus) Fatal(msg string) {
-	logrus.Fatal(msg)
+	l.logger.Fatal(msg)
 }
 
 func (l Logrus) Fatalf(template string, args ...interface{}) {
-	logrus.Fatalf(template, args...)
+	l.logger.Fatalf(template, args...)
 }
 
 func (l Logrus) Fatalw(msg string, fields log.Fields) {
-	logrus.WithFields(logrus.Fields(fields)).Fatal(msg)
+	l.logger.WithFields(logrus.Fields(fields)).Fatal(msg)
 }
