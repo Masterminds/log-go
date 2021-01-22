@@ -41,6 +41,11 @@ implementation of the interface or has a wrapper written around it to do so. In
 the _impl_ directory are 4 reference implementations of loggers that work with
 this interface.
 
+Need to change the logger out? All you need to do is change the instance you use
+in the setup. This makes it easy to change logger later or based on your case.
+For example, you could have a single library and for a CLI application send the
+output to the console and in a service log the output elsewhere.
+
 There is also a global logger that you can use.
 
 ```go
