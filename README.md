@@ -86,6 +86,7 @@ The following log levels are currently implemented across the interface and all
 the reference implementations.
 
 - Fatal
+- Panic
 - Error
 - Warn
 - Info

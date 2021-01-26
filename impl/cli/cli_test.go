@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/mattfarina/log"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLogger(t *testing.T) {
@@ -15,6 +16,7 @@ func TestLogger(t *testing.T) {
 		InfoOut:  buf,
 		WarnOut:  buf,
 		ErrorOut: buf,
+		PanicOut: buf,
 		FatalOut: buf,
 		Level:    log.DebugLevel,
 	}
@@ -97,6 +99,33 @@ func TestLogger(t *testing.T) {
 	if !strings.Contains(buf.String(), `foo bar baz=qux`) {
 		t.Log(buf.String())
 		t.Error("cli error not logging correctly")
+	}
+	buf.Reset()
+
+	assert.PanicsWithValue(t, "PANIC: test panic", func() {
+		lgr.Panic("test panic")
+	})
+	if !strings.Contains(buf.String(), `test panic`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
+	}
+	buf.Reset()
+
+	assert.PanicsWithValue(t, "PANIC: Hello World", func() {
+		lgr.Panicf("Hello %s", "World")
+	})
+	if !strings.Contains(buf.String(), `Hello World`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
+	}
+	buf.Reset()
+
+	assert.PanicsWithValue(t, "PANIC: foo bar baz=qux ", func() {
+		lgr.Panicw("foo bar", log.Fields{"baz": "qux"})
+	})
+	if !strings.Contains(buf.String(), `foo bar baz=qux`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
 	}
 	buf.Reset()
 

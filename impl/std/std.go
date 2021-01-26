@@ -91,6 +91,24 @@ func (l Logger) Errorw(msg string, fields log.Fields) {
 	}
 }
 
+func (l Logger) Panic(msg ...interface{}) {
+	if l.Level <= log.PanicLevel {
+		l.logger.Panic(append([]interface{}{"[PANIC]   "}, msg...)...)
+	}
+}
+
+func (l Logger) Panicf(template string, args ...interface{}) {
+	if l.Level <= log.PanicLevel {
+		l.logger.Panicf("[PANIC]   "+template, args...)
+	}
+}
+
+func (l Logger) Panicw(msg string, fields log.Fields) {
+	if l.Level <= log.PanicLevel {
+		l.logger.Panicf("[PANIC]   %s %s", msg, handlFields(fields))
+	}
+}
+
 func (l Logger) Fatal(msg ...interface{}) {
 	if l.Level <= log.FatalLevel {
 		l.logger.Fatal(append([]interface{}{"[FATAL]   "}, msg...)...)

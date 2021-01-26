@@ -16,6 +16,7 @@ const (
 	InfoLevel
 	WarnLevel
 	ErrorLevel
+	PanicLevel
 	FatalLevel
 )
 
@@ -92,6 +93,24 @@ func (l StdLogger) Errorf(template string, args ...interface{}) {
 func (l StdLogger) Errorw(msg string, fields Fields) {
 	if l.Level <= ErrorLevel {
 		stdlog.Printf("[ERROR]   %s %s", msg, handlFields(fields))
+	}
+}
+
+func (l StdLogger) Panic(msg ...interface{}) {
+	if l.Level <= PanicLevel {
+		stdlog.Panic(append([]interface{}{"[PANIC]   "}, msg...)...)
+	}
+}
+
+func (l StdLogger) Panicf(template string, args ...interface{}) {
+	if l.Level <= PanicLevel {
+		stdlog.Panicf("[PANIC]   "+template, args...)
+	}
+}
+
+func (l StdLogger) Panicw(msg string, fields Fields) {
+	if l.Level <= PanicLevel {
+		stdlog.Panicf("[PANIC]   %s %s", msg, handlFields(fields))
 	}
 }
 

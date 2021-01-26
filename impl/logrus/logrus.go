@@ -69,6 +69,18 @@ func (l Logrus) Errorw(msg string, fields log.Fields) {
 	l.logger.WithFields(logrus.Fields(fields)).Error(msg)
 }
 
+func (l Logrus) Panic(msg ...interface{}) {
+	l.logger.Panic(msg...)
+}
+
+func (l Logrus) Panicf(template string, args ...interface{}) {
+	l.logger.Panicf(template, args...)
+}
+
+func (l Logrus) Panicw(msg string, fields log.Fields) {
+	l.logger.WithFields(logrus.Fields(fields)).Panic(msg)
+}
+
 func (l Logrus) Fatal(msg ...interface{}) {
 	l.logger.Fatal(msg...)
 }

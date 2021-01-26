@@ -92,6 +92,27 @@ func TestInterface(t *testing.T) {
 	}
 	buf.Reset()
 
+	Panic("test panic")
+	if !strings.Contains(buf.String(), `level=panic msg="test panic"`) {
+		t.Log(buf.String())
+		t.Error("current panic not logging correctly")
+	}
+	buf.Reset()
+
+	Panicf("Hello %s", "World")
+	if !strings.Contains(buf.String(), `level=panic msg="Hello World"`) {
+		t.Log(buf.String())
+		t.Error("current panic not logging correctly")
+	}
+	buf.Reset()
+
+	Panicw("foo bar", Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `level=panic msg="foo bar" baz=qux`) {
+		t.Log(buf.String())
+		t.Error("current panic not logging correctly")
+	}
+	buf.Reset()
+
 	Fatal("test fatal")
 	if !strings.Contains(buf.String(), `level=fatal msg="test fatal"`) {
 		t.Log(buf.String())
@@ -170,6 +191,18 @@ func (l testLogger) Errorf(template string, args ...interface{}) {
 
 func (l testLogger) Errorw(msg string, fields Fields) {
 	dummyw(l.logger, "error", msg, fields)
+}
+
+func (l testLogger) Panic(msg ...interface{}) {
+	dummy(l.logger, "panic", msg...)
+}
+
+func (l testLogger) Panicf(template string, args ...interface{}) {
+	dummyf(l.logger, "panic", template, args...)
+}
+
+func (l testLogger) Panicw(msg string, fields Fields) {
+	dummyw(l.logger, "panic", msg, fields)
 }
 
 func (l testLogger) Fatal(msg ...interface{}) {

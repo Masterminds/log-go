@@ -31,6 +31,15 @@ func TestLogrus(t *testing.T) {
 	lgr.Error("test error")
 	lgr.Errorf("Hello %s", "World")
 	lgr.Errorw("foo bar", log.Fields{"baz": "qux"})
+	assert.Panics(t, func() {
+		lgr.Panic("test panic")
+	})
+	assert.Panics(t, func() {
+		lgr.Panicf("Hello %s", "World")
+	})
+	assert.Panics(t, func() {
+		lgr.Panicw("foo bar", log.Fields{"baz": "qux"})
+	})
 
 	ts.AssertMessages(
 		"DEBUG	test debug",
@@ -45,6 +54,9 @@ func TestLogrus(t *testing.T) {
 		"ERROR	test error",
 		"ERROR	Hello World",
 		"ERROR	foo bar	{\"baz\": \"qux\"}",
+		"PANIC	test panic",
+		"PANIC	Hello World",
+		"PANIC	foo bar	{\"baz\": \"qux\"}",
 	)
 
 	// lgr.Fatal("test fatal")

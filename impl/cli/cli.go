@@ -15,6 +15,7 @@ type Cli struct {
 	InfoOut  io.Writer
 	WarnOut  io.Writer
 	ErrorOut io.Writer
+	PanicOut io.Writer
 	FatalOut io.Writer
 
 	Level int
@@ -26,6 +27,7 @@ func NewStandard() log.Logger {
 		InfoOut:  os.Stdout,
 		WarnOut:  os.Stderr,
 		ErrorOut: os.Stderr,
+		PanicOut: os.Stderr,
 		FatalOut: os.Stderr,
 		Level:    log.InfoLevel,
 	}
@@ -100,6 +102,30 @@ func (l Cli) Errorf(template string, args ...interface{}) {
 func (l Cli) Errorw(msg string, fields log.Fields) {
 	if l.Level <= log.ErrorLevel {
 		fmt.Fprint(l.ErrorOut, "ERROR: "+msg, handlFields(fields))
+	}
+}
+
+func (l Cli) Panic(msg ...interface{}) {
+	if l.Level <= log.PanicLevel {
+		out := fmt.Sprint(append([]interface{}{"PANIC: "}, msg...)...)
+		fmt.Fprint(l.PanicOut, out)
+		panic(out)
+	}
+}
+
+func (l Cli) Panicf(template string, args ...interface{}) {
+	if l.Level <= log.PanicLevel {
+		out := fmt.Sprintf("PANIC: "+template, args...)
+		fmt.Fprint(l.PanicOut, out)
+		panic(out)
+	}
+}
+
+func (l Cli) Panicw(msg string, fields log.Fields) {
+	if l.Level <= log.PanicLevel {
+		out := fmt.Sprint("PANIC: "+msg, handlFields(fields))
+		fmt.Fprint(l.PanicOut, out)
+		panic(out)
 	}
 }
 

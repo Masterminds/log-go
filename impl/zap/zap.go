@@ -65,6 +65,18 @@ func (l Zap) Errorw(msg string, fields log.Fields) {
 	l.logger.Errorw(msg, fieldToAny(fields)...)
 }
 
+func (l Zap) Panic(msg ...interface{}) {
+	l.logger.Panic(msg...)
+}
+
+func (l Zap) Panicf(template string, args ...interface{}) {
+	l.logger.Panicf(template, args...)
+}
+
+func (l Zap) Panicw(msg string, fields log.Fields) {
+	l.logger.Panicw(msg, fieldToAny(fields)...)
+}
+
 func (l Zap) Fatal(msg ...interface{}) {
 	l.logger.Fatal(msg...)
 }

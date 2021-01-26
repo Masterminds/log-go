@@ -23,6 +23,10 @@ type Logger interface {
 	Fatal(msg ...interface{})
 	Fatalf(template string, args ...interface{})
 	Fatalw(msg string, fields Fields)
+
+	Panic(msg ...interface{})
+	Panicf(template string, args ...interface{})
+	Panicw(msg string, fields Fields)
 }
 
 var Current Logger
@@ -89,4 +93,16 @@ func Fatalf(template string, args ...interface{}) {
 
 func Fatalw(msg string, fields Fields) {
 	Current.Fatalw(msg, fields)
+}
+
+func Panic(msg ...interface{}) {
+	Current.Panic(msg...)
+}
+
+func Panicf(template string, args ...interface{}) {
+	Current.Panicf(template, args...)
+}
+
+func Panicw(msg string, fields Fields) {
+	Current.Panicw(msg, fields)
 }

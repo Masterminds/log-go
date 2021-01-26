@@ -7,6 +7,7 @@ import (
 
 	"github.com/mattfarina/log"
 	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLogrus(t *testing.T) {
@@ -185,6 +186,33 @@ func TestStandardLogrus(t *testing.T) {
 	if !strings.Contains(buf.String(), `level=error msg="foo bar" baz=qux`) {
 		t.Log(buf.String())
 		t.Error("logrus error not logging correctly")
+	}
+	buf.Reset()
+
+	assert.Panics(t, func() {
+		lgr.Panic("test panic")
+	})
+	if !strings.Contains(buf.String(), `level=panic msg="test panic"`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
+	}
+	buf.Reset()
+
+	assert.Panics(t, func() {
+		lgr.Panicf("Hello %s", "World")
+	})
+	if !strings.Contains(buf.String(), `level=panic msg="Hello World"`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
+	}
+	buf.Reset()
+
+	assert.Panics(t, func() {
+		lgr.Panicw("foo bar", log.Fields{"baz": "qux"})
+	})
+	if !strings.Contains(buf.String(), `level=panic msg="foo bar" baz=qux`) {
+		t.Log(buf.String())
+		t.Error("cli panic not logging correctly")
 	}
 	buf.Reset()
 
