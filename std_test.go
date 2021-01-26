@@ -1,20 +1,21 @@
-package std
+package log
 
 import (
 	"bytes"
 	stdlog "log"
+	"os"
 	"strings"
 	"testing"
-
-	"github.com/mattfarina/log"
 )
 
-func TestLogger(t *testing.T) {
-	var (
-		buf    bytes.Buffer
-		logger = stdlog.New(&buf, "", stdlog.Lshortfile)
-	)
-	lgr := New(logger)
+func TestStdLogger(t *testing.T) {
+	buf := &bytes.Buffer{}
+	stdlog.SetOutput(buf)
+	defer func() {
+		stdlog.SetOutput(os.Stderr)
+	}()
+
+	lgr := NewStandard()
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `DEBUG:	test debug`) {
@@ -29,7 +30,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	lgr.Debugw("foo bar", log.Fields{"baz": "qux"})
+	lgr.Debugw("foo bar", Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `DEBUG:	foo bar baz=qux`) {
 		t.Log(buf.String())
 		t.Error("stdlib info not logging correctly")
@@ -48,7 +49,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	lgr.Infow("foo bar", log.Fields{"baz": "qux"})
+	lgr.Infow("foo bar", Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `INFO:	foo bar baz=qux`) {
 		t.Log(buf.String())
 		t.Error("stdlib info not logging correctly")
@@ -69,7 +70,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	lgr.Warnw("foo bar", log.Fields{"baz": "qux"})
+	lgr.Warnw("foo bar", Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `WARNING:	foo bar baz=qux`) {
 		t.Log(buf.String())
 		t.Error("stdlib warn not logging correctly")
@@ -90,7 +91,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	lgr.Errorw("foo bar", log.Fields{"baz": "qux"})
+	lgr.Errorw("foo bar", Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `ERROR:	foo bar baz=qux`) {
 		t.Log(buf.String())
 		t.Error("stdlib error not logging correctly")

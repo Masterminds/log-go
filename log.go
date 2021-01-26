@@ -1,11 +1,5 @@
 package log
 
-import (
-	"fmt"
-	"io"
-	"os"
-)
-
 type Fields map[string]interface{}
 
 // Logger is an interface for Logging
@@ -31,8 +25,7 @@ type Logger interface {
 	Fatalw(msg string, fields Fields)
 }
 
-// TODO: Set a default current logger
-var Current = newNotSet(os.Stderr)
+var Current = NewStandard()
 
 func Debug(msg string) {
 	Current.Debug(msg)
@@ -92,74 +85,4 @@ func Fatalf(template string, args ...interface{}) {
 
 func Fatalw(msg string, fields Fields) {
 	Current.Fatalw(msg, fields)
-}
-
-func newNotSet(o io.Writer) Logger {
-	return &notSet{
-		out: o,
-	}
-}
-
-type notSet struct {
-	out io.Writer
-}
-
-func (l notSet) Debug(msg string) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Debugf(template string, args ...interface{}) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Debugw(msg string, fields Fields) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Info(msg string) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Infof(template string, args ...interface{}) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Infow(msg string, fields Fields) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Warn(msg string) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Warnf(template string, args ...interface{}) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Warnw(msg string, fields Fields) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Error(msg string) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Errorf(template string, args ...interface{}) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Errorw(msg string, fields Fields) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Fatal(msg string) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Fatalf(template string, args ...interface{}) {
-	fmt.Fprint(l.out, "No logger set")
-}
-
-func (l notSet) Fatalw(msg string, fields Fields) {
-	fmt.Fprint(l.out, "No logger set")
 }
