@@ -16,6 +16,7 @@ func TestLogger(t *testing.T) {
 		WarnOut:  buf,
 		ErrorOut: buf,
 		FatalOut: buf,
+		Level:    log.DebugLevel,
 	}
 
 	lgr.Debug("test debug")

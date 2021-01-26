@@ -16,6 +16,8 @@ type Cli struct {
 	WarnOut  io.Writer
 	ErrorOut io.Writer
 	FatalOut io.Writer
+
+	Level int
 }
 
 func NewStandard() log.Logger {
@@ -25,70 +27,101 @@ func NewStandard() log.Logger {
 		WarnOut:  os.Stderr,
 		ErrorOut: os.Stderr,
 		FatalOut: os.Stderr,
+		Level:    log.InfoLevel,
 	}
 }
 
 func (l Cli) Debug(msg string) {
-	fmt.Fprint(l.DebugOut, msg)
+	if l.Level <= log.DebugLevel {
+		fmt.Fprint(l.DebugOut, msg)
+	}
 }
 
 func (l Cli) Debugf(template string, args ...interface{}) {
-	fmt.Fprintf(l.DebugOut, template, args...)
+	if l.Level <= log.DebugLevel {
+		fmt.Fprintf(l.DebugOut, template, args...)
+	}
 }
 
 func (l Cli) Debugw(msg string, fields log.Fields) {
-	fmt.Fprint(l.DebugOut, msg, handlFields(fields))
+	if l.Level <= log.DebugLevel {
+		fmt.Fprint(l.DebugOut, msg, handlFields(fields))
+	}
 }
 
 func (l Cli) Info(msg string) {
-	fmt.Fprint(l.InfoOut, msg)
+	if l.Level <= log.InfoLevel {
+		fmt.Fprint(l.InfoOut, msg)
+	}
 }
 
 func (l Cli) Infof(template string, args ...interface{}) {
-	fmt.Fprintf(l.InfoOut, template, args...)
+	if l.Level <= log.InfoLevel {
+		fmt.Fprintf(l.InfoOut, template, args...)
+	}
 }
 
 func (l Cli) Infow(msg string, fields log.Fields) {
-	fmt.Fprint(l.InfoOut, msg, handlFields(fields))
+	if l.Level <= log.InfoLevel {
+		fmt.Fprint(l.InfoOut, msg, handlFields(fields))
+	}
 }
 
 func (l Cli) Warn(msg string) {
-	fmt.Fprint(l.WarnOut, msg)
+	if l.Level <= log.WarnLevel {
+		fmt.Fprint(l.WarnOut, msg)
+	}
 }
 
 func (l Cli) Warnf(template string, args ...interface{}) {
-	fmt.Fprintf(l.WarnOut, template, args...)
+	if l.Level <= log.WarnLevel {
+		fmt.Fprintf(l.WarnOut, template, args...)
+	}
 }
 
 func (l Cli) Warnw(msg string, fields log.Fields) {
-	fmt.Fprint(l.WarnOut, msg, handlFields(fields))
+	if l.Level <= log.WarnLevel {
+		fmt.Fprint(l.WarnOut, msg, handlFields(fields))
+	}
 }
 
 func (l Cli) Error(msg string) {
-	fmt.Fprint(l.ErrorOut, msg)
+	if l.Level <= log.ErrorLevel {
+		fmt.Fprint(l.ErrorOut, msg)
+	}
 }
 
 func (l Cli) Errorf(template string, args ...interface{}) {
-	fmt.Fprintf(l.ErrorOut, template, args...)
+	if l.Level <= log.ErrorLevel {
+		fmt.Fprintf(l.ErrorOut, template, args...)
+	}
 }
 
 func (l Cli) Errorw(msg string, fields log.Fields) {
-	fmt.Fprint(l.ErrorOut, msg, handlFields(fields))
+	if l.Level <= log.ErrorLevel {
+		fmt.Fprint(l.ErrorOut, msg, handlFields(fields))
+	}
 }
 
 func (l Cli) Fatal(msg string) {
-	fmt.Fprint(l.FatalOut, msg)
-	os.Exit(1)
+	if l.Level <= log.FatalLevel {
+		fmt.Fprint(l.FatalOut, msg)
+		os.Exit(1)
+	}
 }
 
 func (l Cli) Fatalf(template string, args ...interface{}) {
-	fmt.Fprintf(l.FatalOut, template, args...)
-	os.Exit(1)
+	if l.Level <= log.FatalLevel {
+		fmt.Fprintf(l.FatalOut, template, args...)
+		os.Exit(1)
+	}
 }
 
 func (l Cli) Fatalw(msg string, fields log.Fields) {
-	fmt.Fprint(l.FatalOut, msg, handlFields(fields))
-	os.Exit(1)
+	if l.Level <= log.FatalLevel {
+		fmt.Fprint(l.FatalOut, msg, handlFields(fields))
+		os.Exit(1)
+	}
 }
 
 func handlFields(flds log.Fields) string {

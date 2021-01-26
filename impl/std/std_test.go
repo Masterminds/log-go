@@ -16,6 +16,17 @@ func TestLogger(t *testing.T) {
 	)
 	lgr := New(logger)
 
+	// Make sure levels are working
+	lgr.Debug("test debug")
+	if strings.Contains(buf.String(), `DEBUG:	test debug`) {
+		t.Log(buf.String())
+		t.Error("stdlib debug not logging correctly")
+	}
+	buf.Reset()
+
+	// Test all levels
+	lgr.Level = log.DebugLevel
+
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `DEBUG:	test debug`) {
 		t.Log(buf.String())

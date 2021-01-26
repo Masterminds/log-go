@@ -25,7 +25,11 @@ type Logger interface {
 	Fatalw(msg string, fields Fields)
 }
 
-var Current = NewStandard()
+var Current Logger
+
+func init() {
+	Current = NewStandard()
+}
 
 func Debug(msg string) {
 	Current.Debug(msg)
