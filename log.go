@@ -4,23 +4,23 @@ type Fields map[string]interface{}
 
 // Logger is an interface for Logging
 type Logger interface {
-	Debug(msg string)
+	Debug(msg ...interface{})
 	Debugf(template string, args ...interface{})
 	Debugw(msg string, fields Fields)
 
-	Info(msg string)
+	Info(msg ...interface{})
 	Infof(template string, args ...interface{})
 	Infow(msg string, fields Fields)
 
-	Warn(msg string)
+	Warn(msg ...interface{})
 	Warnf(template string, args ...interface{})
 	Warnw(msg string, fields Fields)
 
-	Error(msg string)
+	Error(msg ...interface{})
 	Errorf(template string, args ...interface{})
 	Errorw(msg string, fields Fields)
 
-	Fatal(msg string)
+	Fatal(msg ...interface{})
 	Fatalf(template string, args ...interface{})
 	Fatalw(msg string, fields Fields)
 }
@@ -31,8 +31,8 @@ func init() {
 	Current = NewStandard()
 }
 
-func Debug(msg string) {
-	Current.Debug(msg)
+func Debug(msg ...interface{}) {
+	Current.Debug(msg...)
 }
 
 func Debugf(template string, args ...interface{}) {
@@ -43,8 +43,8 @@ func Debugw(msg string, fields Fields) {
 	Current.Debugw(msg, fields)
 }
 
-func Info(msg string) {
-	Current.Info(msg)
+func Info(msg ...interface{}) {
+	Current.Info(msg...)
 }
 
 func Infof(template string, args ...interface{}) {
@@ -55,8 +55,8 @@ func Infow(msg string, fields Fields) {
 	Current.Infow(msg, fields)
 }
 
-func Warn(msg string) {
-	Current.Warn(msg)
+func Warn(msg ...interface{}) {
+	Current.Warn(msg...)
 }
 
 func Warnf(template string, args ...interface{}) {
@@ -67,8 +67,8 @@ func Warnw(msg string, fields Fields) {
 	Current.Warnw(msg, fields)
 }
 
-func Error(msg string) {
-	Current.Error(msg)
+func Error(msg ...interface{}) {
+	Current.Error(msg...)
 }
 
 func Errorf(template string, args ...interface{}) {
@@ -79,8 +79,8 @@ func Errorw(msg string, fields Fields) {
 	Current.Errorw(msg, fields)
 }
 
-func Fatal(msg string) {
-	Current.Fatal(msg)
+func Fatal(msg ...interface{}) {
+	Current.Fatal(msg...)
 }
 
 func Fatalf(template string, args ...interface{}) {

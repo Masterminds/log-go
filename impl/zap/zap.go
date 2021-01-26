@@ -17,8 +17,8 @@ type Zap struct {
 	logger *zap.SugaredLogger
 }
 
-func (l Zap) Debug(msg string) {
-	l.logger.Debug(msg)
+func (l Zap) Debug(msg ...interface{}) {
+	l.logger.Debug(msg...)
 }
 
 func (l Zap) Debugf(template string, args ...interface{}) {
@@ -29,8 +29,8 @@ func (l Zap) Debugw(msg string, fields log.Fields) {
 	l.logger.Debugw(msg, fieldToAny(fields)...)
 }
 
-func (l Zap) Info(msg string) {
-	l.logger.Info(msg)
+func (l Zap) Info(msg ...interface{}) {
+	l.logger.Info(msg...)
 }
 
 func (l Zap) Infof(template string, args ...interface{}) {
@@ -41,8 +41,8 @@ func (l Zap) Infow(msg string, fields log.Fields) {
 	l.logger.Infow(msg, fieldToAny(fields)...)
 }
 
-func (l Zap) Warn(msg string) {
-	l.logger.Warn(msg)
+func (l Zap) Warn(msg ...interface{}) {
+	l.logger.Warn(msg...)
 }
 
 func (l Zap) Warnf(template string, args ...interface{}) {
@@ -53,8 +53,8 @@ func (l Zap) Warnw(msg string, fields log.Fields) {
 	l.logger.Warnw(msg, fieldToAny(fields)...)
 }
 
-func (l Zap) Error(msg string) {
-	l.logger.Error(msg)
+func (l Zap) Error(msg ...interface{}) {
+	l.logger.Error(msg...)
 }
 
 func (l Zap) Errorf(template string, args ...interface{}) {
@@ -65,8 +65,8 @@ func (l Zap) Errorw(msg string, fields log.Fields) {
 	l.logger.Errorw(msg, fieldToAny(fields)...)
 }
 
-func (l Zap) Fatal(msg string) {
-	l.logger.Fatal(msg)
+func (l Zap) Fatal(msg ...interface{}) {
+	l.logger.Fatal(msg...)
 }
 
 func (l Zap) Fatalf(template string, args ...interface{}) {

@@ -23,9 +23,9 @@ type StdLogger struct {
 	Level int
 }
 
-func (l StdLogger) Debug(msg string) {
+func (l StdLogger) Debug(msg ...interface{}) {
 	if l.Level <= DebugLevel {
-		stdlog.Printf("[DEBUG]   %s", msg)
+		stdlog.Print(append([]interface{}{"[DEBUG]   "}, msg...)...)
 	}
 }
 
@@ -41,9 +41,9 @@ func (l StdLogger) Debugw(msg string, fields Fields) {
 	}
 }
 
-func (l StdLogger) Info(msg string) {
+func (l StdLogger) Info(msg ...interface{}) {
 	if l.Level <= InfoLevel {
-		stdlog.Printf("[INFO]    %s", msg)
+		stdlog.Print(append([]interface{}{"[INFO]    "}, msg...)...)
 	}
 }
 
@@ -59,9 +59,9 @@ func (l StdLogger) Infow(msg string, fields Fields) {
 	}
 }
 
-func (l StdLogger) Warn(msg string) {
+func (l StdLogger) Warn(msg ...interface{}) {
 	if l.Level <= WarnLevel {
-		stdlog.Printf("[WARNING] %s", msg)
+		stdlog.Print(append([]interface{}{"[WARNING] "}, msg...)...)
 	}
 }
 
@@ -77,9 +77,9 @@ func (l StdLogger) Warnw(msg string, fields Fields) {
 	}
 }
 
-func (l StdLogger) Error(msg string) {
+func (l StdLogger) Error(msg ...interface{}) {
 	if l.Level <= ErrorLevel {
-		stdlog.Printf("[ERROR]   %s", msg)
+		stdlog.Print(append([]interface{}{"[ERROR]   "}, msg...)...)
 	}
 }
 
@@ -95,9 +95,9 @@ func (l StdLogger) Errorw(msg string, fields Fields) {
 	}
 }
 
-func (l StdLogger) Fatal(msg string) {
+func (l StdLogger) Fatal(msg ...interface{}) {
 	if l.Level <= FatalLevel {
-		stdlog.Fatalf("[FATAL]   %s", msg)
+		stdlog.Fatal(append([]interface{}{"[FATAL]   "}, msg...)...)
 	}
 }
 

@@ -31,9 +31,9 @@ func NewStandard() log.Logger {
 	}
 }
 
-func (l Cli) Debug(msg string) {
+func (l Cli) Debug(msg ...interface{}) {
 	if l.Level <= log.DebugLevel {
-		fmt.Fprint(l.DebugOut, msg)
+		fmt.Fprint(l.DebugOut, fmt.Sprint(append([]interface{}{"DEBUG: "}, msg...)...))
 	}
 }
 
@@ -49,9 +49,9 @@ func (l Cli) Debugw(msg string, fields log.Fields) {
 	}
 }
 
-func (l Cli) Info(msg string) {
+func (l Cli) Info(msg ...interface{}) {
 	if l.Level <= log.InfoLevel {
-		fmt.Fprint(l.InfoOut, "DEBUG: "+msg)
+		fmt.Fprint(l.InfoOut, msg...)
 	}
 }
 
@@ -67,9 +67,9 @@ func (l Cli) Infow(msg string, fields log.Fields) {
 	}
 }
 
-func (l Cli) Warn(msg string) {
+func (l Cli) Warn(msg ...interface{}) {
 	if l.Level <= log.WarnLevel {
-		fmt.Fprint(l.WarnOut, "WARNING: "+msg)
+		fmt.Fprint(l.WarnOut, fmt.Sprint(append([]interface{}{"WARNING: "}, msg...)...))
 	}
 }
 
@@ -85,9 +85,9 @@ func (l Cli) Warnw(msg string, fields log.Fields) {
 	}
 }
 
-func (l Cli) Error(msg string) {
+func (l Cli) Error(msg ...interface{}) {
 	if l.Level <= log.ErrorLevel {
-		fmt.Fprint(l.ErrorOut, "ERROR: "+msg)
+		fmt.Fprint(l.ErrorOut, fmt.Sprint(append([]interface{}{"ERROR: "}, msg...)...))
 	}
 }
 
@@ -103,9 +103,9 @@ func (l Cli) Errorw(msg string, fields log.Fields) {
 	}
 }
 
-func (l Cli) Fatal(msg string) {
+func (l Cli) Fatal(msg ...interface{}) {
 	if l.Level <= log.FatalLevel {
-		fmt.Fprint(l.FatalOut, "FATAL: "+msg)
+		fmt.Fprint(l.FatalOut, fmt.Sprint(append([]interface{}{"FATAL: "}, msg...)...))
 		os.Exit(1)
 	}
 }

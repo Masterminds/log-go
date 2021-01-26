@@ -124,8 +124,8 @@ func newTestLogger(lgr *bytes.Buffer) *testLogger {
 	}
 }
 
-func (l testLogger) Debug(msg string) {
-	dummy(l.logger, "debug", msg)
+func (l testLogger) Debug(msg ...interface{}) {
+	dummy(l.logger, "debug", msg...)
 }
 
 func (l testLogger) Debugf(template string, args ...interface{}) {
@@ -136,8 +136,8 @@ func (l testLogger) Debugw(msg string, fields Fields) {
 	dummyw(l.logger, "debug", msg, fields)
 }
 
-func (l testLogger) Info(msg string) {
-	dummy(l.logger, "info", msg)
+func (l testLogger) Info(msg ...interface{}) {
+	dummy(l.logger, "info", msg...)
 }
 
 func (l testLogger) Infof(template string, args ...interface{}) {
@@ -148,8 +148,8 @@ func (l testLogger) Infow(msg string, fields Fields) {
 	dummyw(l.logger, "info", msg, fields)
 }
 
-func (l testLogger) Warn(msg string) {
-	dummy(l.logger, "warning", msg)
+func (l testLogger) Warn(msg ...interface{}) {
+	dummy(l.logger, "warning", msg...)
 }
 
 func (l testLogger) Warnf(template string, args ...interface{}) {
@@ -160,8 +160,8 @@ func (l testLogger) Warnw(msg string, fields Fields) {
 	dummyw(l.logger, "warning", msg, fields)
 }
 
-func (l testLogger) Error(msg string) {
-	dummy(l.logger, "error", msg)
+func (l testLogger) Error(msg ...interface{}) {
+	dummy(l.logger, "error", msg...)
 }
 
 func (l testLogger) Errorf(template string, args ...interface{}) {
@@ -172,8 +172,8 @@ func (l testLogger) Errorw(msg string, fields Fields) {
 	dummyw(l.logger, "error", msg, fields)
 }
 
-func (l testLogger) Fatal(msg string) {
-	dummy(l.logger, "fatal", msg)
+func (l testLogger) Fatal(msg ...interface{}) {
+	dummy(l.logger, "fatal", msg...)
 }
 
 func (l testLogger) Fatalf(template string, args ...interface{}) {
@@ -184,8 +184,8 @@ func (l testLogger) Fatalw(msg string, fields Fields) {
 	dummyw(l.logger, "fatal", msg, fields)
 }
 
-func dummy(buf *bytes.Buffer, level, msg string) {
-	str := fmt.Sprintf(`level=%s msg="%s"`, level, msg)
+func dummy(buf *bytes.Buffer, level string, msg ...interface{}) {
+	str := fmt.Sprintf(`level=%s msg="%s"`, level, fmt.Sprint(msg...))
 	buf.WriteString(str)
 }
 
@@ -195,7 +195,7 @@ func dummyf(buf *bytes.Buffer, level, template string, args ...interface{}) {
 	buf.WriteString(str)
 }
 
-func dummyw(buf *bytes.Buffer, level, msg string, fields Fields) {
+func dummyw(buf *bytes.Buffer, level string, msg interface{}, fields Fields) {
 	var flds string
 	for k, v := range fields {
 		flds += fmt.Sprintf("%s=%s ", k, v)
