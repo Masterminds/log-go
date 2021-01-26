@@ -9,6 +9,7 @@ import (
 )
 
 // TODO: Add colors support
+// TODO: Add a mutex to lock writing output
 
 type Cli struct {
 	DebugOut io.Writer
@@ -35,79 +36,104 @@ func NewStandard() log.Logger {
 
 func (l Cli) Debug(msg ...interface{}) {
 	if l.Level <= log.DebugLevel {
-		fmt.Fprint(l.DebugOut, fmt.Sprint(append([]interface{}{"DEBUG: "}, msg...)...))
+		out := fmt.Sprint(append([]interface{}{"DEBUG: "}, msg...)...)
+		out = checkEnding(out)
+		fmt.Fprint(l.DebugOut, out)
 	}
 }
 
 func (l Cli) Debugf(template string, args ...interface{}) {
 	if l.Level <= log.DebugLevel {
-		fmt.Fprintf(l.DebugOut, "DEBUG: "+template, args...)
+		out := fmt.Sprintf("DEBUG: "+template, args...)
+		out = checkEnding(out)
+		fmt.Fprintf(l.DebugOut, out)
 	}
 }
 
 func (l Cli) Debugw(msg string, fields log.Fields) {
 	if l.Level <= log.DebugLevel {
-		fmt.Fprint(l.DebugOut, "DEBUG: "+msg, handlFields(fields))
+		out := fmt.Sprint("DEBUG: "+msg, handlFields(fields))
+		out = checkEnding(out)
+		fmt.Fprint(l.DebugOut, out)
 	}
 }
 
 func (l Cli) Info(msg ...interface{}) {
 	if l.Level <= log.InfoLevel {
-		fmt.Fprint(l.InfoOut, msg...)
+		out := fmt.Sprint(msg...)
+		out = checkEnding(out)
+		fmt.Fprint(l.InfoOut, out)
 	}
 }
 
 func (l Cli) Infof(template string, args ...interface{}) {
 	if l.Level <= log.InfoLevel {
-		fmt.Fprintf(l.InfoOut, template, args...)
+		out := fmt.Sprintf(template, args...)
+		out = checkEnding(out)
+		fmt.Fprint(l.InfoOut, out)
 	}
 }
 
 func (l Cli) Infow(msg string, fields log.Fields) {
 	if l.Level <= log.InfoLevel {
-		fmt.Fprint(l.InfoOut, msg, handlFields(fields))
+		out := fmt.Sprint(msg, handlFields(fields))
+		out = checkEnding(out)
+		fmt.Fprint(l.InfoOut, out)
 	}
 }
 
 func (l Cli) Warn(msg ...interface{}) {
 	if l.Level <= log.WarnLevel {
-		fmt.Fprint(l.WarnOut, fmt.Sprint(append([]interface{}{"WARNING: "}, msg...)...))
+		out := fmt.Sprint(append([]interface{}{"WARNING: "}, msg...)...)
+		out = checkEnding(out)
+		fmt.Fprint(l.WarnOut, out)
 	}
 }
 
 func (l Cli) Warnf(template string, args ...interface{}) {
 	if l.Level <= log.WarnLevel {
-		fmt.Fprintf(l.WarnOut, "WARNING: "+template, args...)
+		out := fmt.Sprintf("WARNING: "+template, args...)
+		out = checkEnding(out)
+		fmt.Fprint(l.WarnOut, out)
 	}
 }
 
 func (l Cli) Warnw(msg string, fields log.Fields) {
 	if l.Level <= log.WarnLevel {
-		fmt.Fprint(l.WarnOut, "WARNING: "+msg, handlFields(fields))
+		out := fmt.Sprint("WARNING: "+msg, handlFields(fields))
+		out = checkEnding(out)
+		fmt.Fprint(l.WarnOut, out)
 	}
 }
 
 func (l Cli) Error(msg ...interface{}) {
 	if l.Level <= log.ErrorLevel {
-		fmt.Fprint(l.ErrorOut, fmt.Sprint(append([]interface{}{"ERROR: "}, msg...)...))
+		out := fmt.Sprint(append([]interface{}{"ERROR: "}, msg...)...)
+		out = checkEnding(out)
+		fmt.Fprint(l.ErrorOut, out)
 	}
 }
 
 func (l Cli) Errorf(template string, args ...interface{}) {
 	if l.Level <= log.ErrorLevel {
-		fmt.Fprintf(l.ErrorOut, "ERROR: "+template, args...)
+		out := fmt.Sprintf("ERROR: "+template, args...)
+		out = checkEnding(out)
+		fmt.Fprint(l.ErrorOut, out)
 	}
 }
 
 func (l Cli) Errorw(msg string, fields log.Fields) {
 	if l.Level <= log.ErrorLevel {
-		fmt.Fprint(l.ErrorOut, "ERROR: "+msg, handlFields(fields))
+		out := fmt.Sprint("ERROR: "+msg, handlFields(fields))
+		out = checkEnding(out)
+		fmt.Fprint(l.ErrorOut, out)
 	}
 }
 
 func (l Cli) Panic(msg ...interface{}) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprint(append([]interface{}{"PANIC: "}, msg...)...)
+		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
 	}
@@ -116,6 +142,7 @@ func (l Cli) Panic(msg ...interface{}) {
 func (l Cli) Panicf(template string, args ...interface{}) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprintf("PANIC: "+template, args...)
+		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
 	}
@@ -124,6 +151,7 @@ func (l Cli) Panicf(template string, args ...interface{}) {
 func (l Cli) Panicw(msg string, fields log.Fields) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprint("PANIC: "+msg, handlFields(fields))
+		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
 	}
@@ -131,21 +159,27 @@ func (l Cli) Panicw(msg string, fields log.Fields) {
 
 func (l Cli) Fatal(msg ...interface{}) {
 	if l.Level <= log.FatalLevel {
-		fmt.Fprint(l.FatalOut, fmt.Sprint(append([]interface{}{"FATAL: "}, msg...)...))
+		out := fmt.Sprint(append([]interface{}{"FATAL: "}, msg...)...)
+		out = checkEnding(out)
+		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
 	}
 }
 
 func (l Cli) Fatalf(template string, args ...interface{}) {
 	if l.Level <= log.FatalLevel {
-		fmt.Fprintf(l.FatalOut, "FATAL: "+template, args...)
+		out := fmt.Sprintf("FATAL: "+template, args...)
+		out = checkEnding(out)
+		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
 	}
 }
 
 func (l Cli) Fatalw(msg string, fields log.Fields) {
 	if l.Level <= log.FatalLevel {
-		fmt.Fprint(l.FatalOut, "FATAL: "+msg, handlFields(fields))
+		out := fmt.Sprint("FATAL: "+msg, handlFields(fields))
+		out = checkEnding(out)
+		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
 	}
 }
@@ -156,4 +190,11 @@ func handlFields(flds log.Fields) string {
 		ret += fmt.Sprintf("%s=%s ", k, v)
 	}
 	return ret
+}
+
+func checkEnding(in string) string {
+	if len(in) == 0 || in[len(in)-1] != '\n' {
+		return in + "\n"
+	}
+	return in
 }

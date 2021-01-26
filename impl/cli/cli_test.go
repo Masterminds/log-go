@@ -102,7 +102,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	assert.PanicsWithValue(t, "PANIC: test panic", func() {
+	assert.PanicsWithValue(t, "PANIC: test panic\n", func() {
 		lgr.Panic("test panic")
 	})
 	if !strings.Contains(buf.String(), `test panic`) {
@@ -111,7 +111,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	assert.PanicsWithValue(t, "PANIC: Hello World", func() {
+	assert.PanicsWithValue(t, "PANIC: Hello World\n", func() {
 		lgr.Panicf("Hello %s", "World")
 	})
 	if !strings.Contains(buf.String(), `Hello World`) {
@@ -120,7 +120,7 @@ func TestLogger(t *testing.T) {
 	}
 	buf.Reset()
 
-	assert.PanicsWithValue(t, "PANIC: foo bar baz=qux ", func() {
+	assert.PanicsWithValue(t, "PANIC: foo bar baz=qux \n", func() {
 		lgr.Panicw("foo bar", log.Fields{"baz": "qux"})
 	})
 	if !strings.Contains(buf.String(), `foo bar baz=qux`) {
