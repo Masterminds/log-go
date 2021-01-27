@@ -1,6 +1,8 @@
 package log_test
 
 import (
+	"fmt"
+
 	"github.com/mattfarina/log"
 	"github.com/mattfarina/log/impl/logrus"
 )
@@ -46,4 +48,14 @@ func Example() {
 
 	// Logging in DoSomething will the logger from the standard library
 	f2.DoSomething()
+
+	// Need to detect the logger being used? You can check for the type.
+	switch log.Current.(type) {
+	case *log.StdLogger:
+		fmt.Println("The default logger")
+	case *logrus.Logrus:
+		fmt.Printf("Logrus is used for logging")
+	default:
+		fmt.Printf("Something else that implements the interface")
+	}
 }
