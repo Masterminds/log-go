@@ -19,6 +19,24 @@ type Logger struct {
 	Level  int
 }
 
+func (l Logger) Trace(msg ...interface{}) {
+	if l.Level <= log.TraceLevel {
+		l.logger.Print(append([]interface{}{"[TRACE]   "}, msg...)...)
+	}
+}
+
+func (l Logger) Tracef(template string, args ...interface{}) {
+	if l.Level <= log.TraceLevel {
+		l.logger.Printf("[TRACE]   "+template, args...)
+	}
+}
+
+func (l Logger) Tracew(msg string, fields log.Fields) {
+	if l.Level <= log.TraceLevel {
+		l.logger.Printf("[TRACE]   %s %s", msg, handlFields(fields))
+	}
+}
+
 func (l Logger) Debug(msg ...interface{}) {
 	if l.Level <= log.DebugLevel {
 		l.logger.Print(append([]interface{}{"[DEBUG]   "}, msg...)...)

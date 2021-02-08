@@ -12,6 +12,25 @@ func TestInterface(t *testing.T) {
 	lgr := newTestLogger(buf)
 	Current = lgr
 
+	Trace("test trace")
+	if !strings.Contains(buf.String(), `level=trace msg="test trace"`) {
+		t.Error("current trace not logging correctly")
+	}
+	buf.Reset()
+
+	Tracef("Hello %s", "World")
+	if !strings.Contains(buf.String(), `level=trace msg="Hello World"`) {
+		t.Error("current trace not logging correctly")
+	}
+	buf.Reset()
+
+	Tracew("foo bar", Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `level=trace msg="foo bar" baz=qux`) {
+		t.Log(buf.String())
+		t.Error("current trace not logging correctly")
+	}
+	buf.Reset()
+
 	Debug("test debug")
 	if !strings.Contains(buf.String(), `level=debug msg="test debug"`) {
 		t.Error("current debug not logging correctly")
@@ -143,6 +162,18 @@ func newTestLogger(lgr *bytes.Buffer) *testLogger {
 	return &testLogger{
 		logger: lgr,
 	}
+}
+
+func (l testLogger) Trace(msg ...interface{}) {
+	dummy(l.logger, "trace", msg...)
+}
+
+func (l testLogger) Tracef(template string, args ...interface{}) {
+	dummyf(l.logger, "trace", template, args...)
+}
+
+func (l testLogger) Tracew(msg string, fields Fields) {
+	dummyw(l.logger, "trace", msg, fields)
 }
 
 func (l testLogger) Debug(msg ...interface{}) {

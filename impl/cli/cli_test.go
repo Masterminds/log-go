@@ -10,16 +10,41 @@ import (
 )
 
 func TestLogger(t *testing.T) {
+
+	// Test the logger meets the interface
+	var _ log.Logger = new(Logger)
+
 	buf := &bytes.Buffer{}
-	lgr := &Cli{
+	lgr := &Logger{
+		TraceOut: buf,
 		DebugOut: buf,
 		InfoOut:  buf,
 		WarnOut:  buf,
 		ErrorOut: buf,
 		PanicOut: buf,
 		FatalOut: buf,
-		Level:    log.DebugLevel,
+		Level:    log.TraceLevel,
 	}
+
+	lgr.Trace("test trace")
+	if !strings.Contains(buf.String(), `test trace`) {
+		t.Log(buf.String())
+		t.Error("cli trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracef("Hello %s", "World")
+	if !strings.Contains(buf.String(), `Hello World`) {
+		t.Error("cli trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracew("foo bar", log.Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `foo bar baz=qux`) {
+		t.Log(buf.String())
+		t.Error("cli trace not logging correctly")
+	}
+	buf.Reset()
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `test debug`) {
@@ -37,7 +62,7 @@ func TestLogger(t *testing.T) {
 	lgr.Debugw("foo bar", log.Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `foo bar baz=qux`) {
 		t.Log(buf.String())
-		t.Error("cli info not logging correctly")
+		t.Error("cli debug not logging correctly")
 	}
 	buf.Reset()
 

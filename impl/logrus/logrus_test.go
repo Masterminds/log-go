@@ -11,11 +11,34 @@ import (
 )
 
 func TestLogrus(t *testing.T) {
+
+	// Test the logger meets the interface
+	var _ log.Logger = new(Logrus)
+
 	var logger = logrus.New()
-	logger.SetLevel(logrus.DebugLevel)
+	logger.SetLevel(logrus.TraceLevel)
 	buf := &bytes.Buffer{}
 	logger.SetOutput(buf)
 	lgr := New(logger)
+
+	lgr.Trace("test trace")
+	if !strings.Contains(buf.String(), `level=trace msg="test trace"`) {
+		t.Error("logrus trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracef("Hello %s", "World")
+	if !strings.Contains(buf.String(), `level=trace msg="Hello World"`) {
+		t.Error("logrus trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracew("foo bar", log.Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `level=trace msg="foo bar" baz=qux`) {
+		t.Log(buf.String())
+		t.Error("logrus trace not logging correctly")
+	}
+	buf.Reset()
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `level=debug msg="test debug"`) {

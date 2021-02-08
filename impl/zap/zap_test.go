@@ -12,6 +12,10 @@ import (
 )
 
 func TestLogrus(t *testing.T) {
+
+	// Test the logger meets the interface
+	var _ log.Logger = new(Zap)
+
 	ts := newTestLogSpy(t)
 	defer ts.AssertPassed()
 	logger := zaptest.NewLogger(ts, zaptest.Level(zap.DebugLevel))
@@ -24,7 +28,11 @@ func TestLogrus(t *testing.T) {
 
 	sugar := logger.Sugar()
 	lgr := NewSugar(sugar)
+	lgr.TraceEnabled = true
 
+	lgr.Trace("test trace")
+	lgr.Tracef("Hello %s", "World")
+	lgr.Tracew("foo bar", log.Fields{"baz": "qux"})
 	lgr.Debug("test debug")
 	lgr.Debugf("Hello %s", "World")
 	lgr.Debugw("foo bar", log.Fields{"baz": "qux"})
@@ -48,6 +56,9 @@ func TestLogrus(t *testing.T) {
 	})
 
 	ts.AssertMessages(
+		"DEBUG	test trace",
+		"DEBUG	Hello World",
+		"DEBUG	foo bar	{\"baz\": \"qux\"}",
 		"DEBUG	test debug",
 		"DEBUG	Hello World",
 		"DEBUG	foo bar	{\"baz\": \"qux\"}",

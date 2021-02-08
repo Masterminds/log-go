@@ -11,6 +11,10 @@ import (
 )
 
 func TestLogger(t *testing.T) {
+
+	// Test the logger meets the interface
+	var _ log.Logger = new(Logger)
+
 	var (
 		buf    bytes.Buffer
 		logger = stdlog.New(&buf, "", stdlog.Lshortfile)
@@ -26,7 +30,27 @@ func TestLogger(t *testing.T) {
 	buf.Reset()
 
 	// Test all levels
-	lgr.Level = log.DebugLevel
+	lgr.Level = log.TraceLevel
+
+	lgr.Trace("test trace")
+	if !strings.Contains(buf.String(), `[TRACE]   test trace`) {
+		t.Log(buf.String())
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracef("Hello %s", "World")
+	if !strings.Contains(buf.String(), `[TRACE]   Hello World`) {
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracew("foo bar", log.Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `[TRACE]   foo bar [baz=qux]`) {
+		t.Log(buf.String())
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `[DEBUG]   test debug`) {

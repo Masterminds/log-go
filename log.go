@@ -4,6 +4,10 @@ type Fields map[string]interface{}
 
 // Logger is an interface for Logging
 type Logger interface {
+	Trace(msg ...interface{})
+	Tracef(template string, args ...interface{})
+	Tracew(msg string, fields Fields)
+
 	Debug(msg ...interface{})
 	Debugf(template string, args ...interface{})
 	Debugw(msg string, fields Fields)
@@ -33,6 +37,18 @@ var Current Logger
 
 func init() {
 	Current = NewStandard()
+}
+
+func Trace(msg ...interface{}) {
+	Current.Trace(msg...)
+}
+
+func Tracef(template string, args ...interface{}) {
+	Current.Tracef(template, args...)
+}
+
+func Tracew(msg string, fields Fields) {
+	Current.Tracew(msg, fields)
 }
 
 func Debug(msg ...interface{}) {
