@@ -11,20 +11,37 @@ import (
 // TODO: Add colors support
 // TODO: Add a mutex to lock writing output
 
+// Logger provides a CLI based logger. Log messages are written to the CLI as
+// terminal style output.
 type Logger struct {
+	// TraceOut provides a writer to write trace messages to
 	TraceOut io.Writer
+
+	// DebugOut provides a writer to write debug messages to
 	DebugOut io.Writer
-	InfoOut  io.Writer
-	WarnOut  io.Writer
+
+	// InfoOut provides a writer to write info messages to
+	InfoOut io.Writer
+
+	// WarnOut provides a writer to write warning messages to
+	WarnOut io.Writer
+
+	// ErrorOut provides a writer to write error messages to
 	ErrorOut io.Writer
+
+	// PanicOut provides a writer to write panic messages to
 	PanicOut io.Writer
+
+	// FatalOut provides a writer to write fatal messages to
 	FatalOut io.Writer
 
+	// Level sets the current logging level
 	Level int
 }
 
 func NewStandard() *Logger {
 	return &Logger{
+		// Note, stderr is used for all non-info messages by default
 		TraceOut: os.Stderr,
 		DebugOut: os.Stderr,
 		InfoOut:  os.Stdout,
@@ -36,6 +53,7 @@ func NewStandard() *Logger {
 	}
 }
 
+// Trace logs a message at the Trace level
 func (l Logger) Trace(msg ...interface{}) {
 	if l.Level <= log.TraceLevel {
 		out := fmt.Sprint(append([]interface{}{"TRACE: "}, msg...)...)
@@ -44,6 +62,8 @@ func (l Logger) Trace(msg ...interface{}) {
 	}
 }
 
+// Tracef formats a message according to a format specifier and logs the
+// message at the Trace level
 func (l Logger) Tracef(template string, args ...interface{}) {
 	if l.Level <= log.TraceLevel {
 		out := fmt.Sprintf("TRACE: "+template, args...)
@@ -52,6 +72,8 @@ func (l Logger) Tracef(template string, args ...interface{}) {
 	}
 }
 
+// Tracew logs a message at the Trace level along with some additional
+// context (key-value pairs)
 func (l Logger) Tracew(msg string, fields log.Fields) {
 	if l.Level <= log.TraceLevel {
 		out := fmt.Sprint("TRACE: "+msg, handlFields(fields))
@@ -60,6 +82,7 @@ func (l Logger) Tracew(msg string, fields log.Fields) {
 	}
 }
 
+// Debug logs a message at the Debug level
 func (l Logger) Debug(msg ...interface{}) {
 	if l.Level <= log.DebugLevel {
 		out := fmt.Sprint(append([]interface{}{"DEBUG: "}, msg...)...)
@@ -68,6 +91,8 @@ func (l Logger) Debug(msg ...interface{}) {
 	}
 }
 
+// Debugf formats a message according to a format specifier and logs the
+// message at the Debug level
 func (l Logger) Debugf(template string, args ...interface{}) {
 	if l.Level <= log.DebugLevel {
 		out := fmt.Sprintf("DEBUG: "+template, args...)
@@ -76,6 +101,8 @@ func (l Logger) Debugf(template string, args ...interface{}) {
 	}
 }
 
+// Debugw logs a message at the Debug level along with some additional
+// context (key-value pairs)
 func (l Logger) Debugw(msg string, fields log.Fields) {
 	if l.Level <= log.DebugLevel {
 		out := fmt.Sprint("DEBUG: "+msg, handlFields(fields))
@@ -84,6 +111,7 @@ func (l Logger) Debugw(msg string, fields log.Fields) {
 	}
 }
 
+// Info logs a message at the Info level
 func (l Logger) Info(msg ...interface{}) {
 	if l.Level <= log.InfoLevel {
 		out := fmt.Sprint(msg...)
@@ -92,6 +120,8 @@ func (l Logger) Info(msg ...interface{}) {
 	}
 }
 
+// Infof formats a message according to a format specifier and logs the
+// message at the Info level
 func (l Logger) Infof(template string, args ...interface{}) {
 	if l.Level <= log.InfoLevel {
 		out := fmt.Sprintf(template, args...)
@@ -100,6 +130,8 @@ func (l Logger) Infof(template string, args ...interface{}) {
 	}
 }
 
+// Infow logs a message at the Info level along with some additional
+// context (key-value pairs)
 func (l Logger) Infow(msg string, fields log.Fields) {
 	if l.Level <= log.InfoLevel {
 		out := fmt.Sprint(msg, handlFields(fields))
@@ -108,6 +140,7 @@ func (l Logger) Infow(msg string, fields log.Fields) {
 	}
 }
 
+// Warn logs a message at the Warn level
 func (l Logger) Warn(msg ...interface{}) {
 	if l.Level <= log.WarnLevel {
 		out := fmt.Sprint(append([]interface{}{"WARNING: "}, msg...)...)
@@ -116,6 +149,8 @@ func (l Logger) Warn(msg ...interface{}) {
 	}
 }
 
+// Warnf formats a message according to a format specifier and logs the
+// message at the Warning level
 func (l Logger) Warnf(template string, args ...interface{}) {
 	if l.Level <= log.WarnLevel {
 		out := fmt.Sprintf("WARNING: "+template, args...)
@@ -124,6 +159,8 @@ func (l Logger) Warnf(template string, args ...interface{}) {
 	}
 }
 
+// Warnw logs a message at the Warning level along with some additional
+// context (key-value pairs)
 func (l Logger) Warnw(msg string, fields log.Fields) {
 	if l.Level <= log.WarnLevel {
 		out := fmt.Sprint("WARNING: "+msg, handlFields(fields))
@@ -132,6 +169,7 @@ func (l Logger) Warnw(msg string, fields log.Fields) {
 	}
 }
 
+// Error logs a message at the Error level
 func (l Logger) Error(msg ...interface{}) {
 	if l.Level <= log.ErrorLevel {
 		out := fmt.Sprint(append([]interface{}{"ERROR: "}, msg...)...)
@@ -140,6 +178,8 @@ func (l Logger) Error(msg ...interface{}) {
 	}
 }
 
+// Errorf formats a message according to a format specifier and logs the
+// message at the Error level
 func (l Logger) Errorf(template string, args ...interface{}) {
 	if l.Level <= log.ErrorLevel {
 		out := fmt.Sprintf("ERROR: "+template, args...)
@@ -148,6 +188,8 @@ func (l Logger) Errorf(template string, args ...interface{}) {
 	}
 }
 
+// Errorw logs a message at the Error level along with some additional
+// context (key-value pairs)
 func (l Logger) Errorw(msg string, fields log.Fields) {
 	if l.Level <= log.ErrorLevel {
 		out := fmt.Sprint("ERROR: "+msg, handlFields(fields))
@@ -156,6 +198,7 @@ func (l Logger) Errorw(msg string, fields log.Fields) {
 	}
 }
 
+// Panic logs a message at the Panic level and panics
 func (l Logger) Panic(msg ...interface{}) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprint(append([]interface{}{"PANIC: "}, msg...)...)
@@ -165,6 +208,8 @@ func (l Logger) Panic(msg ...interface{}) {
 	}
 }
 
+// Panicf formats a message according to a format specifier and logs the
+// message at the Panic level and then panics
 func (l Logger) Panicf(template string, args ...interface{}) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprintf("PANIC: "+template, args...)
@@ -174,6 +219,8 @@ func (l Logger) Panicf(template string, args ...interface{}) {
 	}
 }
 
+// Panicw logs a message at the Panic level along with some additional
+// context (key-value pairs) and then panics
 func (l Logger) Panicw(msg string, fields log.Fields) {
 	if l.Level <= log.PanicLevel {
 		out := fmt.Sprint("PANIC: "+msg, handlFields(fields))
@@ -183,6 +230,7 @@ func (l Logger) Panicw(msg string, fields log.Fields) {
 	}
 }
 
+// Fatal logs a message at the Fatal level and exists the application
 func (l Logger) Fatal(msg ...interface{}) {
 	if l.Level <= log.FatalLevel {
 		out := fmt.Sprint(append([]interface{}{"FATAL: "}, msg...)...)
@@ -192,6 +240,8 @@ func (l Logger) Fatal(msg ...interface{}) {
 	}
 }
 
+// Fatalf formats a message according to a format specifier and logs the
+// message at the Fatal level and exits the application
 func (l Logger) Fatalf(template string, args ...interface{}) {
 	if l.Level <= log.FatalLevel {
 		out := fmt.Sprintf("FATAL: "+template, args...)
@@ -201,6 +251,8 @@ func (l Logger) Fatalf(template string, args ...interface{}) {
 	}
 }
 
+// Fatalw logs a message at the Fatal level along with some additional
+// context (key-value pairs) and exits the application
 func (l Logger) Fatalw(msg string, fields log.Fields) {
 	if l.Level <= log.FatalLevel {
 		out := fmt.Sprint("FATAL: "+msg, handlFields(fields))

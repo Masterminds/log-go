@@ -4,7 +4,7 @@ The log package provides a common interface that can be used in applications and
 libraries along with reference implementation wrappers for logrus, zap, the Go
 standard library package, and for a CLI.
 
-*_Note: this codebase is under active development. Consider it pre-alpha code._*
+*_Note: this codebase is under active development. Consider it beta code._*
 
 ## The Problem
 
