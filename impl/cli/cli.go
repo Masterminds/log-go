@@ -46,7 +46,7 @@ func (l Cli) Debugf(template string, args ...interface{}) {
 	if l.Level <= log.DebugLevel {
 		out := fmt.Sprintf("DEBUG: "+template, args...)
 		out = checkEnding(out)
-		fmt.Fprintf(l.DebugOut, out)
+		fmt.Fprint(l.DebugOut, out)
 	}
 }
 

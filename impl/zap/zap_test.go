@@ -15,7 +15,13 @@ func TestLogrus(t *testing.T) {
 	ts := newTestLogSpy(t)
 	defer ts.AssertPassed()
 	logger := zaptest.NewLogger(ts, zaptest.Level(zap.DebugLevel))
-	defer logger.Sync()
+	defer func() {
+		err := logger.Sync()
+		if err != nil {
+			t.Errorf("Error syncing logger: %s", err)
+		}
+	}()
+
 	sugar := logger.Sugar()
 	lgr := NewSugar(sugar)
 
@@ -67,7 +73,12 @@ func TestLogrus(t *testing.T) {
 
 func TestZapInterface(t *testing.T) {
 	logger := zaptest.NewLogger(t, zaptest.Level(zap.DebugLevel))
-	defer logger.Sync()
+	defer func() {
+		err := logger.Sync()
+		if err != nil {
+			t.Errorf("Error syncing logger: %s", err)
+		}
+	}()
 	sugar := logger.Sugar()
 	lgr := NewSugar(sugar)
 	testfunc(lgr)
