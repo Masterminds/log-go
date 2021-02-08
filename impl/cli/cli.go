@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/mattfarina/log"
+	"github.com/mattfarina/log-go"
 )
 
 // TODO: Add colors support

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	stdlog "log"
 
-	"github.com/mattfarina/log"
+	"github.com/mattfarina/log-go"
 )
 
 func New(lgr *stdlog.Logger) *Logger {

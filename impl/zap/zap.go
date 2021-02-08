@@ -1,7 +1,7 @@
 package zap
 
 import (
-	"github.com/mattfarina/log"
+	"github.com/mattfarina/log-go"
 	"go.uber.org/zap"
 )
 

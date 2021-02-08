@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/mattfarina/log"
-	"github.com/mattfarina/log/impl/logrus"
+	"github.com/mattfarina/log-go"
+	"github.com/mattfarina/log-go/impl/logrus"
 )
 
 func main() {

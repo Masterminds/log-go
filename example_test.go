@@ -3,8 +3,8 @@ package log_test
 import (
 	"fmt"
 
-	"github.com/mattfarina/log"
-	"github.com/mattfarina/log/impl/logrus"
+	"github.com/mattfarina/log-go"
+	"github.com/mattfarina/log-go/impl/logrus"
 )
 
 type Foo struct {
@@ -42,7 +42,7 @@ func Example() {
 	f2 := Foo{
 		// The log package uses the global logger from the standard library log
 		// package. A custom standard library logger can be used with the
-		// github.com/mattfarina/log/impl/std package.
+		// github.com/mattfarina/log-go/impl/std package.
 		Logger: log.NewStandard(),
 	}
 
