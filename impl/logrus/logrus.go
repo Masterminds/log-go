@@ -1,7 +1,7 @@
 package logrus
 
 import (
-	"github.com/mattfarina/log"
+	"github.com/mattfarina/log-go"
 	"github.com/sirupsen/logrus"
 )
 

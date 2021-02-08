@@ -1,4 +1,4 @@
-module github.com/mattfarina/log
+module github.com/mattfarina/log-go
 
 go 1.15
 

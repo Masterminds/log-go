@@ -53,7 +53,7 @@ The easiest way to get started is to import the package and start logging.
 
 ```go
 import(
-    "github.com/mattfarina/log"
+    "github.com/mattfarina/log-go"
 )
 
 log.Info("Send Some Info")
@@ -66,8 +66,8 @@ application you can set the logger like so...
 
 ```go
 import(
-    "github.com/mattfarina/log"
-    "github.com/mattfarina/log/impl/logrus"
+    "github.com/mattfarina/log-go"
+    "github.com/mattfarina/log-go/impl/logrus"
 )
 
 log.Current = logrus.NewStandard()
@@ -83,7 +83,7 @@ power is in the interface where you can create you own implementation.
 There is a second way to use the interface in your applications and packages.
 
 ```go
-import "github.com/mattfarina/log"
+import "github.com/mattfarina/log-go"
 
 func NewConstructorExample(logger log.Logger) {
     return &Example{

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/mattfarina/log"
+import "github.com/mattfarina/log-go"
 
 func main() {
 

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mattfarina/log"
-	"github.com/mattfarina/log/impl/std"
+	"github.com/mattfarina/log-go"
+	"github.com/mattfarina/log-go/impl/std"
 )
 
 // This example is designed to help you understand how you can write tests with
@@ -27,7 +27,7 @@ func TestLogger(t *testing.T) {
 	)
 
 	// The impl/std package enables you to pass in an instance of a logger from
-	// the standard library. The github.com/mattfarina/log.NewStandard()
+	// the standard library. The github.com/mattfarina/log-go.NewStandard()
 	// constructor uses the standard logger in the standard libraries log pkg.
 	lgr := std.New(logger)
 
