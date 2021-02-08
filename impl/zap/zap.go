@@ -7,14 +7,38 @@ import (
 
 // TODO: Add support for non-sugared logger
 
-func NewSugar(lgr *zap.SugaredLogger) log.Logger {
+func NewSugar(lgr *zap.SugaredLogger) *Zap {
 	return &Zap{
-		logger: lgr,
+		logger:       lgr,
+		TraceEnabled: false,
 	}
 }
 
 type Zap struct {
 	logger *zap.SugaredLogger
+
+	// TraceEnabled turns on the trace level. This also requires the zap logging
+	// level to be set to debut. Zap does not natively support the trace level.
+	// It is bubbled up into the debug messages when trace support is turned on.
+	TraceEnabled bool
+}
+
+func (l Zap) Trace(msg ...interface{}) {
+	if l.TraceEnabled {
+		l.logger.Debug(msg...)
+	}
+}
+
+func (l Zap) Tracef(template string, args ...interface{}) {
+	if l.TraceEnabled {
+		l.logger.Debugf(template, args...)
+	}
+}
+
+func (l Zap) Tracew(msg string, fields log.Fields) {
+	if l.TraceEnabled {
+		l.logger.Debugw(msg, fieldToAny(fields)...)
+	}
 }
 
 func (l Zap) Debug(msg ...interface{}) {

@@ -28,7 +28,27 @@ func TestStdLogger(t *testing.T) {
 	buf.Reset()
 
 	// Test all levels
-	lgr.Level = DebugLevel
+	lgr.Level = TraceLevel
+
+	lgr.Trace("test debug")
+	if !strings.Contains(buf.String(), `[TRACE]   test debug`) {
+		t.Log(buf.String())
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracef("Hello %s", "World")
+	if !strings.Contains(buf.String(), `[TRACE]   Hello World`) {
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
+
+	lgr.Tracew("foo bar", Fields{"baz": "qux"})
+	if !strings.Contains(buf.String(), `[TRACE]   foo bar [baz=qux]`) {
+		t.Log(buf.String())
+		t.Error("stdlib trace not logging correctly")
+	}
+	buf.Reset()
 
 	lgr.Debug("test debug")
 	if !strings.Contains(buf.String(), `[DEBUG]   test debug`) {
@@ -46,7 +66,7 @@ func TestStdLogger(t *testing.T) {
 	lgr.Debugw("foo bar", Fields{"baz": "qux"})
 	if !strings.Contains(buf.String(), `[DEBUG]   foo bar [baz=qux]`) {
 		t.Log(buf.String())
-		t.Error("stdlib info not logging correctly")
+		t.Error("stdlib debug not logging correctly")
 	}
 	buf.Reset()
 

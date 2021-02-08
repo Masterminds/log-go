@@ -12,7 +12,8 @@ func NewStandard() *StdLogger {
 }
 
 const (
-	DebugLevel = iota
+	TraceLevel = iota
+	DebugLevel
 	InfoLevel
 	WarnLevel
 	ErrorLevel
@@ -22,6 +23,24 @@ const (
 
 type StdLogger struct {
 	Level int
+}
+
+func (l StdLogger) Trace(msg ...interface{}) {
+	if l.Level <= TraceLevel {
+		stdlog.Print(append([]interface{}{"[TRACE]   "}, msg...)...)
+	}
+}
+
+func (l StdLogger) Tracef(template string, args ...interface{}) {
+	if l.Level <= TraceLevel {
+		stdlog.Printf("[TRACE]   "+template, args...)
+	}
+}
+
+func (l StdLogger) Tracew(msg string, fields Fields) {
+	if l.Level <= TraceLevel {
+		stdlog.Printf("[TRACE]   %s %s", msg, handlFields(fields))
+	}
 }
 
 func (l StdLogger) Debug(msg ...interface{}) {

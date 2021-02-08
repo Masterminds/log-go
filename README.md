@@ -120,3 +120,4 @@ the reference implementations.
 - Warn
 - Info
 - Debug
+- Trace

@@ -9,16 +9,28 @@ type Logrus struct {
 	logger *logrus.Logger
 }
 
-func New(lgr *logrus.Logger) log.Logger {
+func New(lgr *logrus.Logger) *Logrus {
 	return &Logrus{
 		logger: lgr,
 	}
 }
 
-func NewStandard() log.Logger {
+func NewStandard() *Logrus {
 	return &Logrus{
 		logger: logrus.StandardLogger(),
 	}
+}
+
+func (l Logrus) Trace(msg ...interface{}) {
+	l.logger.Trace(msg...)
+}
+
+func (l Logrus) Tracef(template string, args ...interface{}) {
+	l.logger.Tracef(template, args...)
+}
+
+func (l Logrus) Tracew(msg string, fields log.Fields) {
+	l.logger.WithFields(logrus.Fields(fields)).Trace(msg)
 }
 
 func (l Logrus) Debug(msg ...interface{}) {
