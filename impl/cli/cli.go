@@ -5,11 +5,18 @@ import (
 	"io"
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/mattfarina/log-go"
 )
 
-// TODO: Add colors support
+// TODO: Add i18n support for level labels
 // TODO: Add a mutex to lock writing output
+
+// This package provides a reference implementation for a CLI logger, where the
+// output is written to the console. If you need a CLI logger that is fairly
+// different from this one please feel free to create another CLI implementation
+// and you can fork this one as a starting point. Not everyone needs to use this
+// logger CLI implementation and it does not need to have all features.
 
 // Logger provides a CLI based logger. Log messages are written to the CLI as
 // terminal style output.
@@ -37,26 +44,47 @@ type Logger struct {
 
 	// Level sets the current logging level
 	Level int
+
+	// Colors used for each of the levels. Note, the Info level intentionally
+	// does not have a color. It will use the tty default.
+	TraceColor *color.Color
+	DebugColor *color.Color
+	WarnColor  *color.Color
+	ErrorColor *color.Color
+	PanicColor *color.Color
+	FatalColor *color.Color
 }
 
 func NewStandard() *Logger {
+	Red := color.New(color.FgRed)
+	RedB := color.New(color.FgRed, color.Bold)
+	Yellow := color.New(color.FgYellow)
+	Blue := color.New(color.FgBlue)
+	Green := color.New(color.FgGreen)
+
 	return &Logger{
 		// Note, stderr is used for all non-info messages by default
-		TraceOut: os.Stderr,
-		DebugOut: os.Stderr,
-		InfoOut:  os.Stdout,
-		WarnOut:  os.Stderr,
-		ErrorOut: os.Stderr,
-		PanicOut: os.Stderr,
-		FatalOut: os.Stderr,
-		Level:    log.InfoLevel,
+		TraceOut:   os.Stderr,
+		DebugOut:   os.Stderr,
+		InfoOut:    os.Stdout,
+		WarnOut:    os.Stderr,
+		ErrorOut:   os.Stderr,
+		PanicOut:   os.Stderr,
+		FatalOut:   os.Stderr,
+		Level:      log.InfoLevel,
+		TraceColor: Green,
+		DebugColor: Blue,
+		WarnColor:  Yellow,
+		ErrorColor: Red,
+		PanicColor: RedB,
+		FatalColor: RedB,
 	}
 }
 
 // Trace logs a message at the Trace level
 func (l Logger) Trace(msg ...interface{}) {
 	if l.Level <= log.TraceLevel {
-		out := fmt.Sprint(append([]interface{}{"TRACE: "}, msg...)...)
+		out := fmt.Sprint(append([]interface{}{l.TraceColor.Sprint("TRACE: ")}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.TraceOut, out)
 	}
@@ -66,7 +94,8 @@ func (l Logger) Trace(msg ...interface{}) {
 // message at the Trace level
 func (l Logger) Tracef(template string, args ...interface{}) {
 	if l.Level <= log.TraceLevel {
-		out := fmt.Sprintf("TRACE: "+template, args...)
+		out := l.TraceColor.Sprint("TRACE: ")
+		out += fmt.Sprintf(template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.TraceOut, out)
 	}
@@ -76,7 +105,8 @@ func (l Logger) Tracef(template string, args ...interface{}) {
 // context (key-value pairs)
 func (l Logger) Tracew(msg string, fields log.Fields) {
 	if l.Level <= log.TraceLevel {
-		out := fmt.Sprint("TRACE: "+msg, handlFields(fields))
+		out := l.TraceColor.Sprint("TRACE: ")
+		out += fmt.Sprint(msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.TraceOut, out)
 	}
@@ -85,7 +115,7 @@ func (l Logger) Tracew(msg string, fields log.Fields) {
 // Debug logs a message at the Debug level
 func (l Logger) Debug(msg ...interface{}) {
 	if l.Level <= log.DebugLevel {
-		out := fmt.Sprint(append([]interface{}{"DEBUG: "}, msg...)...)
+		out := fmt.Sprint(append([]interface{}{l.DebugColor.Sprint("DEBUG: ")}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.DebugOut, out)
 	}
@@ -95,7 +125,8 @@ func (l Logger) Debug(msg ...interface{}) {
 // message at the Debug level
 func (l Logger) Debugf(template string, args ...interface{}) {
 	if l.Level <= log.DebugLevel {
-		out := fmt.Sprintf("DEBUG: "+template, args...)
+		out := l.DebugColor.Sprint("DEBUG: ")
+		out += fmt.Sprintf(template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.DebugOut, out)
 	}
@@ -105,7 +136,8 @@ func (l Logger) Debugf(template string, args ...interface{}) {
 // context (key-value pairs)
 func (l Logger) Debugw(msg string, fields log.Fields) {
 	if l.Level <= log.DebugLevel {
-		out := fmt.Sprint("DEBUG: "+msg, handlFields(fields))
+		out := l.DebugColor.Sprint("DEBUG: ")
+		out += fmt.Sprint(msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.DebugOut, out)
 	}
@@ -143,7 +175,7 @@ func (l Logger) Infow(msg string, fields log.Fields) {
 // Warn logs a message at the Warn level
 func (l Logger) Warn(msg ...interface{}) {
 	if l.Level <= log.WarnLevel {
-		out := fmt.Sprint(append([]interface{}{"WARNING: "}, msg...)...)
+		out := l.WarnColor.Sprint(append([]interface{}{"WARNING: "}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.WarnOut, out)
 	}
@@ -153,7 +185,7 @@ func (l Logger) Warn(msg ...interface{}) {
 // message at the Warning level
 func (l Logger) Warnf(template string, args ...interface{}) {
 	if l.Level <= log.WarnLevel {
-		out := fmt.Sprintf("WARNING: "+template, args...)
+		out := l.WarnColor.Sprintf("WARNING: "+template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.WarnOut, out)
 	}
@@ -163,7 +195,7 @@ func (l Logger) Warnf(template string, args ...interface{}) {
 // context (key-value pairs)
 func (l Logger) Warnw(msg string, fields log.Fields) {
 	if l.Level <= log.WarnLevel {
-		out := fmt.Sprint("WARNING: "+msg, handlFields(fields))
+		out := l.WarnColor.Sprint("WARNING: "+msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.WarnOut, out)
 	}
@@ -172,7 +204,7 @@ func (l Logger) Warnw(msg string, fields log.Fields) {
 // Error logs a message at the Error level
 func (l Logger) Error(msg ...interface{}) {
 	if l.Level <= log.ErrorLevel {
-		out := fmt.Sprint(append([]interface{}{"ERROR: "}, msg...)...)
+		out := l.ErrorColor.Sprint(append([]interface{}{"ERROR: "}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.ErrorOut, out)
 	}
@@ -182,7 +214,7 @@ func (l Logger) Error(msg ...interface{}) {
 // message at the Error level
 func (l Logger) Errorf(template string, args ...interface{}) {
 	if l.Level <= log.ErrorLevel {
-		out := fmt.Sprintf("ERROR: "+template, args...)
+		out := l.ErrorColor.Sprintf("ERROR: "+template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.ErrorOut, out)
 	}
@@ -192,7 +224,7 @@ func (l Logger) Errorf(template string, args ...interface{}) {
 // context (key-value pairs)
 func (l Logger) Errorw(msg string, fields log.Fields) {
 	if l.Level <= log.ErrorLevel {
-		out := fmt.Sprint("ERROR: "+msg, handlFields(fields))
+		out := l.ErrorColor.Sprint("ERROR: "+msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.ErrorOut, out)
 	}
@@ -201,7 +233,7 @@ func (l Logger) Errorw(msg string, fields log.Fields) {
 // Panic logs a message at the Panic level and panics
 func (l Logger) Panic(msg ...interface{}) {
 	if l.Level <= log.PanicLevel {
-		out := fmt.Sprint(append([]interface{}{"PANIC: "}, msg...)...)
+		out := l.PanicColor.Sprint(append([]interface{}{"PANIC: "}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
@@ -212,7 +244,7 @@ func (l Logger) Panic(msg ...interface{}) {
 // message at the Panic level and then panics
 func (l Logger) Panicf(template string, args ...interface{}) {
 	if l.Level <= log.PanicLevel {
-		out := fmt.Sprintf("PANIC: "+template, args...)
+		out := l.PanicColor.Sprintf("PANIC: "+template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
@@ -223,7 +255,7 @@ func (l Logger) Panicf(template string, args ...interface{}) {
 // context (key-value pairs) and then panics
 func (l Logger) Panicw(msg string, fields log.Fields) {
 	if l.Level <= log.PanicLevel {
-		out := fmt.Sprint("PANIC: "+msg, handlFields(fields))
+		out := l.PanicColor.Sprint("PANIC: "+msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.PanicOut, out)
 		panic(out)
@@ -233,7 +265,7 @@ func (l Logger) Panicw(msg string, fields log.Fields) {
 // Fatal logs a message at the Fatal level and exists the application
 func (l Logger) Fatal(msg ...interface{}) {
 	if l.Level <= log.FatalLevel {
-		out := fmt.Sprint(append([]interface{}{"FATAL: "}, msg...)...)
+		out := l.FatalColor.Sprint(append([]interface{}{"FATAL: "}, msg...)...)
 		out = checkEnding(out)
 		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
@@ -244,7 +276,7 @@ func (l Logger) Fatal(msg ...interface{}) {
 // message at the Fatal level and exits the application
 func (l Logger) Fatalf(template string, args ...interface{}) {
 	if l.Level <= log.FatalLevel {
-		out := fmt.Sprintf("FATAL: "+template, args...)
+		out := l.FatalColor.Sprintf("FATAL: "+template, args...)
 		out = checkEnding(out)
 		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
@@ -255,7 +287,7 @@ func (l Logger) Fatalf(template string, args ...interface{}) {
 // context (key-value pairs) and exits the application
 func (l Logger) Fatalw(msg string, fields log.Fields) {
 	if l.Level <= log.FatalLevel {
-		out := fmt.Sprint("FATAL: "+msg, handlFields(fields))
+		out := l.FatalColor.Sprint("FATAL: "+msg, handlFields(fields))
 		out = checkEnding(out)
 		fmt.Fprint(l.FatalOut, out)
 		os.Exit(1)
