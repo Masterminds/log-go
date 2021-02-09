@@ -6,6 +6,10 @@ standard library package, and for a CLI.
 
 *_Note: this codebase is under active development. Consider it beta code._*
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/mattfarina/log-go)](https://goreportcard.com/report/github.com/mattfarina/log-go)
+[![](https://github.com/Masterminds/semver/workflows/Tests/badge.svg)](https://github.com/mattfarina/log-go/actions)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/mattfarina/log-go)
+
 ## The Problem
 
 The problem is that there are many logging packages where each has its own
@@ -45,11 +49,16 @@ This is a secondary use case and benefit from having an interface.
 
 ## Usage
 
-There are a couple parts to using the log package.
+The usage documentation is broken down into 3 types of usage depending on your
+situation.
 
-### Using The Interface
+### Library / Package Authors
 
-The easiest way to get started is to import the package and start logging.
+If you are a library or package author there are two ways you can use this log
+package.
+
+First, you can import the package and use the package level logging options. For
+example:
 
 ```go
 import(
@@ -59,28 +68,10 @@ import(
 log.Info("Send Some Info")
 ```
 
-This uses the global interface which is one of the two ways to use the interface.
+You can use this for logging within your package.
 
-The real power is in the ability to change the logger. In the setup to your
-application you can set the logger like so...
-
-```go
-import(
-    "github.com/mattfarina/log-go"
-    "github.com/mattfarina/log-go/impl/logrus"
-)
-
-log.Current = logrus.NewStandard()
-```
-
-Any calls to log following this will be sent to logrus. The `logrus.NewStandard()`
-function provides a default logrus client. There is another constructor that
-lets you provide a custom logrus configuration.
-
-The loggers provided by this library are reference implementations. The real
-power is in the interface where you can create you own implementation.
-
-There is a second way to use the interface in your applications and packages.
+Second, if you want to pass a logger around your package you can use the
+interface provided by this package. For example:
 
 ```go
 import "github.com/mattfarina/log-go"
@@ -97,17 +88,50 @@ func (e *Example) Foo() {
 
 ```
 
-In this setup the interface `log.Logger` is is used in the constructor. Any of
-the implementations can be passed in an instance. When the function `Foo` is
-called the logger in use will do the logging. It could be any logger that works
-for the interface.
+In your packages testing you can check log messages if you need to see that they
+are working and contain what you are looking for. A simple example of doing this
+is in the `_examples` directory.
 
-### Providing A Logger
+### Application Developers
 
-What does it take to create a new logger or provide a logger? It just takes
-creating a struct that conforms to the `log.Logger` interface. There are several
-reference implementations in the _impl_ directory to help you understand the
-structure.
+If you are developing an application that will be writing logs you will want to
+setup and configure logging the way you want. This is where this interface
+based package empowers you. You can pick your logging implementation or write
+your own.
+
+For example, if you want to use a standard logrus logger you can setup logging
+like so:
+
+```go
+import(
+    "github.com/mattfarina/log-go"
+    "github.com/mattfarina/log-go/impl/logrus"
+)
+
+log.Current = logrus.NewStandard()
+```
+
+In this example a standard logrus logger is created, wrapped in a struct
+instance that conforms to the interface, and is set as the global logger to use.
+
+The `impl` directory has several reference implementations and they have
+configurable setups.
+
+Once you setup the global logger the way you want all the packages will use this
+same logger.
+
+### Logger Developers
+
+There are many loggers and many ways to record logs. They can be written to a
+file, sent to stdout/stderr, sent to a logging service, and more. Each of these
+is possible with this package.
+
+If you have logger you want to use you can write one that conforms to the
+`Logger` interface found in `log.go`. That logger can then be configured as
+documented in the previous section.
+
+The `impl` directory has reference implementations you can look at for further
+examples.
 
 ## Log Levels
 
