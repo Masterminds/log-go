@@ -53,7 +53,7 @@ func Example() {
 	switch log.Current.(type) {
 	case *log.StdLogger:
 		fmt.Println("The default logger")
-	case *logrus.Logrus:
+	case *logrus.Logger:
 		fmt.Printf("Logrus is used for logging")
 	default:
 		fmt.Printf("Something else that implements the interface")
