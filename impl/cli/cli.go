@@ -55,6 +55,7 @@ type Logger struct {
 	FatalColor *color.Color
 }
 
+// NewStandard creates a default CLI logger
 func NewStandard() *Logger {
 	Red := color.New(color.FgRed)
 	RedB := color.New(color.FgRed, color.Bold)

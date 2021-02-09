@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Logrus is a logger that wraps the logrus logger and has it conform to the
+// Logger is a logger that wraps the logrus logger and has it conform to the
 // log.Logger interface
 type Logger struct {
 	logger *logrus.Logger

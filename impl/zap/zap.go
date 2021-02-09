@@ -16,6 +16,8 @@ func NewSugar(lgr *zap.SugaredLogger) *Logger {
 	}
 }
 
+// Logger is a wrapper about a Zap sugared logger that implements the log.Logger
+// interface
 type Logger struct {
 	logger *zap.SugaredLogger
 
