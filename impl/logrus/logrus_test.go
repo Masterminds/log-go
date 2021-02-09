@@ -13,7 +13,7 @@ import (
 func TestLogrus(t *testing.T) {
 
 	// Test the logger meets the interface
-	var _ log.Logger = new(Logrus)
+	var _ log.Logger = new(Logger)
 
 	var logger = logrus.New()
 	logger.SetLevel(logrus.TraceLevel)

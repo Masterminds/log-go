@@ -14,7 +14,7 @@ import (
 func TestLogrus(t *testing.T) {
 
 	// Test the logger meets the interface
-	var _ log.Logger = new(Zap)
+	var _ log.Logger = new(Logger)
 
 	ts := newTestLogSpy(t)
 	defer ts.AssertPassed()
