@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/fatih/color"
 	"github.com/mattfarina/log-go"
 	"github.com/stretchr/testify/assert"
 )
@@ -14,16 +15,24 @@ func TestLogger(t *testing.T) {
 	// Test the logger meets the interface
 	var _ log.Logger = new(Logger)
 
+	black := color.New(color.FgBlack)
+
 	buf := &bytes.Buffer{}
 	lgr := &Logger{
-		TraceOut: buf,
-		DebugOut: buf,
-		InfoOut:  buf,
-		WarnOut:  buf,
-		ErrorOut: buf,
-		PanicOut: buf,
-		FatalOut: buf,
-		Level:    log.TraceLevel,
+		TraceOut:   buf,
+		DebugOut:   buf,
+		InfoOut:    buf,
+		WarnOut:    buf,
+		ErrorOut:   buf,
+		PanicOut:   buf,
+		FatalOut:   buf,
+		Level:      log.TraceLevel,
+		TraceColor: black,
+		DebugColor: black,
+		WarnColor:  black,
+		ErrorColor: black,
+		PanicColor: black,
+		FatalColor: black,
 	}
 
 	lgr.Trace("test trace")
