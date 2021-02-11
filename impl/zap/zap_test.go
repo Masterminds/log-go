@@ -18,7 +18,7 @@ func TestLogrus(t *testing.T) {
 
 	ts := newTestLogSpy(t)
 	defer ts.AssertPassed()
-	logger := zaptest.NewLogger(ts, zaptest.Level(zap.DebugLevel))
+	logger := zaptest.NewLogger(ts, zaptest.Level(zap.DebugLevel-1))
 	defer func() {
 		err := logger.Sync()
 		if err != nil {
@@ -26,9 +26,7 @@ func TestLogrus(t *testing.T) {
 		}
 	}()
 
-	sugar := logger.Sugar()
-	lgr := NewSugar(sugar)
-	lgr.TraceEnabled = true
+	lgr := New(logger)
 
 	lgr.Trace("test trace")
 	lgr.Tracef("Hello %s", "World")
@@ -56,9 +54,9 @@ func TestLogrus(t *testing.T) {
 	})
 
 	ts.AssertMessages(
-		"DEBUG	test trace",
-		"DEBUG	Hello World",
-		"DEBUG	foo bar	{\"baz\": \"qux\"}",
+		"LEVEL(-2)	test trace",
+		"LEVEL(-2)	Hello World",
+		"LEVEL(-2)	foo bar	{\"baz\": \"qux\"}",
 		"DEBUG	test debug",
 		"DEBUG	Hello World",
 		"DEBUG	foo bar	{\"baz\": \"qux\"}",
@@ -90,8 +88,7 @@ func TestZapInterface(t *testing.T) {
 			t.Errorf("Error syncing logger: %s", err)
 		}
 	}()
-	sugar := logger.Sugar()
-	lgr := NewSugar(sugar)
+	lgr := New(logger)
 	testfunc(lgr)
 }
 
