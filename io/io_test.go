@@ -20,49 +20,49 @@ func TestCurrentIO(t *testing.T) {
 	}()
 
 	o := NewCurrentWriter(log.TraceLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=trace msg="testing"`) {
 		t.Error("current trace not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.DebugLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=debug msg="testing"`) {
 		t.Error("current debug not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.InfoLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=info msg="testing"`) {
 		t.Error("current info not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.WarnLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=warning msg="testing"`) {
 		t.Error("current warn not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.ErrorLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=error msg="testing"`) {
 		t.Error("current error not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.PanicLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=panic msg="testing"`) {
 		t.Error("current panic not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewCurrentWriter(log.FatalLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=fatal msg="testing"`) {
 		t.Error("current fatal not logging correctly")
 	}
@@ -76,7 +76,7 @@ func TestCurrentIO(t *testing.T) {
 	}()
 	log.Current = def // Test logger does not panic. Using one that does
 	o = NewCurrentWriter(5000)
-	io.WriteString(o, "not happening")
+	_, _ = io.WriteString(o, "not happening")
 	if !strings.Contains(buf.String(), `level=000 msg="testing"`) {
 		t.Error("current fatal not logging correctly")
 	}
@@ -89,49 +89,49 @@ func TestIO(t *testing.T) {
 	lgr := newTestLogger(buf)
 
 	o := NewWriter(lgr, log.TraceLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=trace msg="testing"`) {
 		t.Error("current trace not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.DebugLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=debug msg="testing"`) {
 		t.Error("current debug not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.InfoLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=info msg="testing"`) {
 		t.Error("current info not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.WarnLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=warning msg="testing"`) {
 		t.Error("current warn not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.ErrorLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=error msg="testing"`) {
 		t.Error("current error not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.PanicLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=panic msg="testing"`) {
 		t.Error("current panic not logging correctly")
 	}
 	buf.Reset()
 
 	o = NewWriter(lgr, log.FatalLevel)
-	io.WriteString(o, "testing")
+	_, _ = io.WriteString(o, "testing")
 	if !strings.Contains(buf.String(), `level=fatal msg="testing"`) {
 		t.Error("current fatal not logging correctly")
 	}
@@ -144,7 +144,7 @@ func TestIO(t *testing.T) {
 		}
 	}()
 	o = NewWriter(log.Current, 5000) // Test logger does not panic. Using one that does
-	io.WriteString(o, "not happening")
+	_, _ = io.WriteString(o, "not happening")
 	if !strings.Contains(buf.String(), `level=000 msg="testing"`) {
 		t.Error("current fatal not logging correctly")
 	}

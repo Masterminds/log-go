@@ -20,5 +20,5 @@ func main() {
 
 	// io.WriteString accepts an io.Writer as its first argument. This shows
 	// writing the string "foo" to the logger at the info level.
-	io.WriteString(w, "foo")
+	_, _ = io.WriteString(w, "foo")
 }
