@@ -6,9 +6,9 @@ standard library package, and for a CLI.
 
 *_Note: this codebase is under active development. Consider it beta code._*
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/mattfarina/log-go)](https://goreportcard.com/report/github.com/mattfarina/log-go)
-[![](https://github.com/Masterminds/semver/workflows/Tests/badge.svg)](https://github.com/mattfarina/log-go/actions)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/mattfarina/log-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Masterminds/log-go)](https://goreportcard.com/report/github.com/Masterminds/log-go)
+[![](https://github.com/Masterminds/semver/workflows/Tests/badge.svg)](https://github.com/Masterminds/log-go/actions)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/Masterminds/log-go)
 
 ## The Problem
 
@@ -62,7 +62,7 @@ example:
 
 ```go
 import(
-    "github.com/mattfarina/log-go"
+    "github.com/Masterminds/log-go"
 )
 
 log.Info("Send Some Info")
@@ -74,7 +74,7 @@ Second, if you want to pass a logger around your package you can use the
 interface provided by this package. For example:
 
 ```go
-import "github.com/mattfarina/log-go"
+import "github.com/Masterminds/log-go"
 
 func NewConstructorExample(logger log.Logger) {
     return &Example{
@@ -104,8 +104,8 @@ like so:
 
 ```go
 import(
-    "github.com/mattfarina/log-go"
-    "github.com/mattfarina/log-go/impl/logrus"
+    "github.com/Masterminds/log-go"
+    "github.com/Masterminds/log-go/impl/logrus"
 )
 
 log.Current = logrus.NewStandard()

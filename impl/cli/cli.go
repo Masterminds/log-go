@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/Masterminds/log-go"
 	"github.com/fatih/color"
-	"github.com/mattfarina/log-go"
 )
 
 // TODO: Add i18n support for level labels
