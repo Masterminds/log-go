@@ -4,7 +4,7 @@ import (
 	"fmt"
 	stdlog "log"
 
-	"github.com/mattfarina/log-go"
+	"github.com/Masterminds/log-go"
 )
 
 // New creates an instance of std.Logger that wraps a logger from the standard

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/mattfarina/log-go"
-	lgrs "github.com/mattfarina/log-go/impl/logrus"
+	"github.com/Masterminds/log-go"
+	lgrs "github.com/Masterminds/log-go/impl/logrus"
 	"github.com/sirupsen/logrus"
 )
 

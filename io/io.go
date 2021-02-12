@@ -2,8 +2,8 @@
 // a chosen level. An example of this would be:
 //     import(
 //         "io"
-//         "github.com/mattfarina/log-go"
-//         logio "github.com/mattfarina/log-go/io"
+//         "github.com/Masterminds/log-go"
+//         logio "github.com/Masterminds/log-go/io"
 //     )
 //
 //     func main() {
@@ -13,7 +13,7 @@
 package io
 
 import (
-	"github.com/mattfarina/log-go"
+	"github.com/Masterminds/log-go"
 )
 
 // CurrentWriter uses the current package level logger for io writing

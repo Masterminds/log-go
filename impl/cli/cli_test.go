@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Masterminds/log-go"
 	"github.com/fatih/color"
-	"github.com/mattfarina/log-go"
 	"github.com/stretchr/testify/assert"
 )
 

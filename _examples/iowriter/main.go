@@ -3,8 +3,8 @@ package main
 import (
 	"io"
 
-	"github.com/mattfarina/log-go"
-	logio "github.com/mattfarina/log-go/io"
+	"github.com/Masterminds/log-go"
+	logio "github.com/Masterminds/log-go/io"
 )
 
 // Sometimes you have an io.Writer interface and you want to have it write to

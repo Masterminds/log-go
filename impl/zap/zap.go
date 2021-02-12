@@ -3,7 +3,7 @@ package zap
 import (
 	"fmt"
 
-	"github.com/mattfarina/log-go"
+	"github.com/Masterminds/log-go"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

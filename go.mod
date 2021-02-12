@@ -1,4 +1,4 @@
-module github.com/mattfarina/log-go
+module github.com/Masterminds/log-go
 
 go 1.15
 
