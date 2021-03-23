@@ -4,8 +4,6 @@ The log package provides a common interface that can be used in applications and
 libraries along with reference implementation wrappers for logrus, zap, the Go
 standard library package, and for a CLI.
 
-*_Note: this codebase is under active development. Consider it beta code._*
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/Masterminds/log-go)](https://goreportcard.com/report/github.com/Masterminds/log-go)
 [![](https://github.com/Masterminds/semver/workflows/Tests/badge.svg)](https://github.com/Masterminds/log-go/actions)
 [![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/Masterminds/log-go)
