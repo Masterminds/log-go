@@ -1,5 +1,10 @@
 package log
 
+import (
+	"fmt"
+	"strings"
+)
+
 // Fields represents a map of key-value pairs where the value can be any Go
 // type. The value must be able to be converted to a string.
 type Fields map[string]interface{}
@@ -82,6 +87,32 @@ type Logger interface {
 	// Fatalw logs a message at the Fatal level along with some additional
 	// context (key-value pairs) and exits the application
 	Fatalw(msg string, fields Fields)
+}
+
+// Atoi returns the loglevel integer associated with a common loglevel
+// string representation.
+func Atoi(loglevelStr string) (level int, err error) {
+	switch strings.ToLower(loglevelStr) {
+	case "trace":
+		level = TraceLevel
+	case "debug":
+		level = DebugLevel
+	case "info":
+		level = InfoLevel
+	case "warn":
+		level = WarnLevel
+	case "warning":
+		level = WarnLevel
+	case "error":
+		level = ErrorLevel
+	case "panic":
+		level = PanicLevel
+	case "fatal":
+		level = FatalLevel
+	default:
+		err = fmt.Errorf("unknown loglevel: %s", loglevelStr)
+	}
+	return
 }
 
 // Current contains the logger used for the package level logging functions

@@ -154,6 +154,29 @@ func TestInterface(t *testing.T) {
 	buf.Reset()
 }
 
+func TestAtoi(t *testing.T) {
+	names := []string{"Trace", "Debug", "Info", "Warn", "Warning", "Error", "Panic", "Fatal"}
+	levels := []int{TraceLevel, DebugLevel, InfoLevel, WarnLevel, WarnLevel, ErrorLevel, PanicLevel, FatalLevel}
+	if len(names) != len(levels) {
+		t.Fatal("inconsistent number of elements in test")
+	}
+	for n := range names {
+		name := names[n]
+		level := levels[n]
+		testLevel, err := Atoi(name)
+		if err != nil {
+			t.Errorf("name to level translation returned: %v", err)
+		}
+		if testLevel != level {
+			t.Errorf("incorrect loglevel (%d) set by name \"%s\"", level, name)
+		}
+	}
+	_, err := Atoi("fakeName")
+	if err == nil {
+		t.Error("fake loglevel name failed to return an error")
+	}
+}
+
 type testLogger struct {
 	logger *bytes.Buffer
 }
