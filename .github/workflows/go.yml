@@ -25,10 +25,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Setup Go for Building
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go-version }}
-          stable: '!contains(${{ matrix.go }}, "beta") && !contains(${{ matrix.go }}, "rc")'
       - name: Build
         run: go build -v ./...
 
