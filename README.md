@@ -1,54 +1,51 @@
 # Log Package
 
-The log package provides a common interface that can be used in applications and
-libraries along with reference implementation wrappers for logrus, zap, the Go
-standard library package, and for a CLI.
+The log package provides a common interface for logging that can be used in
+applications and libraries along with reference implementations for logrus, zap,
+the Go standard library package, and for a CLI (console app).
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Masterminds/log-go)](https://goreportcard.com/report/github.com/Masterminds/log-go)
 [![](https://github.com/Masterminds/semver/workflows/Tests/badge.svg)](https://github.com/Masterminds/log-go/actions)
 [![GoDoc](https://img.shields.io/static/v1?label=go.dev&message=reference&color=blue)](https://pkg.go.dev/github.com/Masterminds/log-go)
 
-## The Problem
+## Why A Log Interface
 
-The problem is that there are many logging packages where each has its own
-interface. This makes it difficult to mix and match libraries and code that
-depend on different interfaces. It also makes it difficult to change logging
-libraries if the one you are using becomes deprecated or you would like to
-switch to a different one (e.g., you want to tie into a logging service).
+In many programming languages there is a logging interface. Libraries will use
+use the interface for logging and then the application will choose the logging
+library of their choice for the application as a whole. Since everything follows
+the interface it works.
 
-The log package aims to provide a solution to this problem.
+Go does not have a detailed interface. The logging package included in the
+standard library has been insufficient so many logging libraries have been
+created.
 
-## Use Cases
+Various libraries/packages use the a logging implementation of their choice.
+When those are pulled into a larger application is will end up having multiple
+different logging systems. The main application needs to wire them all up or it
+will miss some logs. If you take a look at applications like Kubernetes, Nomad,
+and many others you'll discover they import many different logging implementations.
 
-This library was born out of a specific problem that also presents itself as a
-solution for a second use case.
+Using interfaces provides a may to move away from multiple implementation,
+simplify codebases, reduce binary size, and reduce threat surface area.
 
-### Use Case 1: Console and Logging
+## What This Package Provides
 
-I was working on an application that needs to write output to the console
-(sometimes with color) and to logrus. logrus is in the maintenance stage of
-development (it's even recommending other logging packages) so I can see it
-someday being replaced in the system I'll have to deal with.
+This library includes several things including:
 
-I needed a solution that let me write messages that in some situations are sent
-to console output and in other situations are sent to logs. In the first
-situation it is as part of a CLI application. In the second case the code is
-imported as a library in a service.
-
-The solution is to use an interface with varying implementations.
-
-### Use Case 2: Logging In Go Is Diverse Which Makes It Hard
-
-Rust, PHP, and many other languages have APIs for logging that different
-implementations can implement. This makes logging pluggable and improves library
-interoperability.
-
-This is a secondary use case and benefit from having an interface.
+- A Go interface for leveled logging. Those levels include - Fatal, Panic, Error,
+  Warn, Info, Debug, Trace
+- When logging messages the interface can do a message, a message with formatting
+  string and arguments, and a message with fields (key/value pairs)
+- Package level logging functions whose implementation can be changed/set
+- Reference implementations for logrus, zap, the standard library, and a CLI
+- A simple default implementation so it just works for library testing and
+  simple situations
 
 ## Usage
 
 The usage documentation is broken down into 3 types of usage depending on your
-situation.
+situation. These examples are for library/package authors, applications, and
+logger implementation developers.
 
 ### Library / Package Authors
 
@@ -89,6 +86,9 @@ func (e *Example) Foo() {
 In your packages testing you can check log messages if you need to see that they
 are working and contain what you are looking for. A simple example of doing this
 is in the `_examples` directory.
+
+For details on exactly which functions are on the package or on the `Logger`
+interface, please see the [package docs](https://pkg.go.dev/github.com/Masterminds/log-go).
 
 ### Application Developers
 
