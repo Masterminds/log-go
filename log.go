@@ -89,9 +89,12 @@ type Logger interface {
 	Fatalw(msg string, fields Fields)
 }
 
-// Atoi returns the loglevel integer associated with a common loglevel
+// Level represents the numerical equivilence to the string loglevel
+type Level int
+
+// ParseLevel returns the loglevel integer associated with a common loglevel
 // string representation.
-func Atoi(loglevelStr string) (level int, err error) {
+func ParseLevel(loglevelStr string) (level Level, err error) {
 	switch strings.ToLower(loglevelStr) {
 	case "trace":
 		level = TraceLevel
