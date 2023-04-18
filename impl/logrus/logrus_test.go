@@ -245,7 +245,7 @@ func TestStandardLogrus(t *testing.T) {
 
 }
 
-func TestLogrusInterface(t *testing.T) {
+func TestLogrusInterface(_ *testing.T) {
 	lgr := NewStandard()
 	testfunc(lgr)
 }
