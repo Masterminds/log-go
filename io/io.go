@@ -1,15 +1,16 @@
 // Package io provides a means of turning a log.Logger into an io.Writer for
 // a chosen level. An example of this would be:
-//     import(
-//         "io"
-//         "github.com/Masterminds/log-go"
-//         logio "github.com/Masterminds/log-go/io"
-//     )
 //
-//     func main() {
-//         w := logio.NewCurrentWriter(log.InfoLevel)
-//         io.WriteString(w, "foo")
-//     }
+//	import(
+//	    "io"
+//	    "github.com/Masterminds/log-go"
+//	    logio "github.com/Masterminds/log-go/io"
+//	)
+//
+//	func main() {
+//	    w := logio.NewCurrentWriter(log.InfoLevel)
+//	    io.WriteString(w, "foo")
+//	}
 package io
 
 import (

@@ -68,7 +68,7 @@ func TestCurrentIO(t *testing.T) {
 	}
 	buf.Reset()
 
-	// Testing a non-existant level
+	// Testing a non-existent level
 	defer func() {
 		if r := recover(); r != nil {
 			t.Log(r)
@@ -137,7 +137,7 @@ func TestIO(t *testing.T) {
 	}
 	buf.Reset()
 
-	// Testing a non-existant level
+	// Testing a non-existent level
 	defer func() {
 		if r := recover(); r != nil {
 			t.Log(r)
