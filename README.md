@@ -25,7 +25,7 @@ different logging systems. The main application needs to wire them all up or it
 will miss some logs. If you take a look at applications like Kubernetes, Nomad,
 and many others you'll discover they import many different logging implementations.
 
-Using interfaces provides a may to move away from multiple implementation,
+Using interfaces provides a way to move away from multiple implementation,
 simplify codebases, reduce binary size, and reduce threat surface area.
 
 ## What This Package Provides
